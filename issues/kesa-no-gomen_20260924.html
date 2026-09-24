@@ -1,0 +1,517 @@
+<title>けさの五面</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Shippori+Mincho+B1:wght@400;600;700&family=Noto+Serif+JP:wght@400;600&family=Noto+Sans+JP:wght@400;500;700&display=swap">
+<style>
+  :root{
+    --paper:#EFEEE7;
+    --panel:#F7F6F1;
+    --ink:#000000;
+    --ink-soft:#33362F;
+    --muted:#6C6F65;
+    --rule:#C6C4B7;
+    --hair:#D8D6CA;
+    --ai:#23407F;          /* 藍 */
+    --enji:#8C2B3A;        /* 臙脂 */
+    --tint:#E4E5DC;
+    --shadow:rgba(24,26,24,.14);
+    --serif:"Noto Serif JP","Hiragino Mincho ProN","Yu Mincho",serif;
+    --display:"Shippori Mincho B1","Noto Serif JP","Hiragino Mincho ProN",serif;
+    --sans:"Noto Sans JP","Hiragino Kaku Gothic ProN","Yu Gothic",system-ui,sans-serif;
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --paper:#14161A; --panel:#1A1D22; --ink:#E9E7DE; --ink-soft:#CFCDC3;
+      --muted:#8E9188; --rule:#3A3E45; --hair:#2C3037; --tint:#22262C;
+      --ai:#8FA9E8; --enji:#DE8290; --shadow:rgba(0,0,0,.5);
+    }
+  }
+  :root[data-theme="dark"]{
+    --paper:#14161A; --panel:#1A1D22; --ink:#E9E7DE; --ink-soft:#CFCDC3;
+    --muted:#8E9188; --rule:#3A3E45; --hair:#2C3037; --tint:#22262C;
+    --ai:#8FA9E8; --enji:#DE8290; --shadow:rgba(0,0,0,.5);
+  }
+
+  body{background:var(--paper);color:var(--ink);font-family:var(--serif);
+       -webkit-font-smoothing:antialiased;line-height:1.85;}
+  .sheet{max-width:1160px;margin:0 auto;padding:clamp(18px,3vw,40px) clamp(14px,3vw,36px) 64px;
+         background:var(--panel);box-shadow:0 0 0 1px var(--hair),0 18px 48px -34px var(--shadow);}
+  a{color:var(--ai);text-underline-offset:.18em;text-decoration-thickness:.06em;}
+  a:focus-visible{outline:2px solid var(--enji);outline-offset:3px;}
+
+  /* ── 題字 ───────────────────────── */
+  .masthead{display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:12px 28px;
+            padding-bottom:10px;border-bottom:3px solid var(--ink);}
+  .masthead::after{content:"";display:block;flex:1 0 100%;height:0;}
+  .title-lockup{display:flex;align-items:baseline;gap:14px;flex-wrap:wrap;}
+  .nameplate{font-family:var(--display);font-weight:700;font-size:clamp(2.4rem,6.4vw,3.9rem);
+             line-height:1;letter-spacing:.06em;margin:0;}
+  .nameplate .dot{color:var(--enji);}
+  .colophon{font-family:var(--sans);font-size:.72rem;color:var(--muted);text-align:right;
+            line-height:1.9;letter-spacing:.04em;font-variant-numeric:tabular-nums;}
+  .colophon b{color:var(--ink-soft);font-weight:500;}
+  .hairline{height:1px;background:var(--ink);margin-top:3px;opacity:.55;}
+
+  /* ── 面見出し ──────────────────── */
+  .page-label{display:flex;align-items:center;gap:10px;margin:0 0 14px;}
+  .page-label .mark{width:9px;height:9px;background:var(--enji);flex:none;}
+  .page-label h2{font-family:var(--sans);font-weight:700;font-size:.86rem;letter-spacing:.34em;
+                 margin:0;white-space:nowrap;}
+  .page-label .fill{flex:1;height:1px;background:var(--rule);}
+  .page-label .meta{font-family:var(--sans);font-size:.68rem;color:var(--muted);letter-spacing:.1em;}
+
+  /* ── トップ ───────────────────── */
+  .top{display:grid;grid-template-columns:minmax(0,2.05fr) minmax(0,1fr);gap:0 30px;
+       margin-top:26px;padding-bottom:26px;border-bottom:3px double var(--rule);}
+  .kicker{font-family:var(--sans);font-size:.72rem;font-weight:700;letter-spacing:.2em;
+          color:var(--enji);margin:0 0 8px;}
+  .lead-head{font-family:var(--display);font-weight:700;font-size:clamp(1.85rem,4.4vw,3rem);
+             line-height:1.32;letter-spacing:.01em;margin:0;text-wrap:balance;}
+  .lead-sub{font-family:var(--display);font-size:clamp(1rem,2vw,1.22rem);color:var(--enji);
+            margin:10px 0 0;font-weight:600;line-height:1.6;text-wrap:balance;}
+  .lede{margin:16px 0 0;padding:14px 0;border-top:1px solid var(--ink);border-bottom:1px solid var(--hair);
+        font-size:1.02rem;line-height:1.95;}
+  .two-col{columns:2;column-gap:26px;column-rule:1px solid var(--hair);margin-top:16px;}
+  .two-col p{margin:0 0 .9em;font-size:.94rem;text-align:justify;}
+  .two-col p:last-child{margin-bottom:0;}
+  @media (max-width:760px){.two-col{columns:1;}}
+
+  /* ── 相場欄 ───────────────────── */
+  .rail{border-left:1px solid var(--rule);padding-left:26px;}
+  @media (max-width:900px){
+    .top{grid-template-columns:1fr;gap:26px;}
+    .rail{border-left:0;padding-left:0;border-top:1px solid var(--rule);padding-top:20px;}
+  }
+  .q{display:flex;align-items:baseline;justify-content:space-between;gap:10px;
+     padding:7px 0;border-bottom:1px dotted var(--rule);font-family:var(--sans);
+     font-variant-numeric:tabular-nums;break-inside:avoid;page-break-inside:avoid;}
+  .q:last-child{border-bottom:0;}
+  .q .n{font-size:.79rem;font-weight:500;color:var(--ink-soft);line-height:1.55;}
+  .q .vv{display:flex;align-items:baseline;gap:8px;justify-content:flex-end;flex:none;}
+  .q .v{font-size:.82rem;font-weight:700;white-space:nowrap;text-align:right;}
+  .q .d{font-size:.72rem;font-weight:700;white-space:nowrap;text-align:right;
+        min-width:4.3em;color:var(--muted);font-variant-numeric:tabular-nums;}
+  .q .d.up{color:var(--enji);} .q .d.dn{color:var(--ai);}
+  .unit{font-weight:400;font-size:.72rem;color:var(--muted);margin-left:2px;}
+  .dn{color:var(--ai);} .up{color:var(--enji);}
+  .rail-note{font-family:var(--sans);font-size:.68rem;color:var(--muted);line-height:1.8;
+             margin:12px 0 0;padding-top:10px;border-top:1px solid var(--hair);}
+
+  /* ── 天気欄（東京） ───────────── */
+  .wx{margin-top:24px;}
+  .wx-today{display:flex;align-items:center;gap:16px;padding:10px 0 14px;
+            border-bottom:1px solid var(--rule);}
+  .wx-icon{font-size:2.4rem;line-height:1;flex:none;}
+  .wx-cond{font-family:var(--sans);font-size:.86rem;font-weight:700;color:var(--ink-soft);
+           letter-spacing:.06em;}
+  .wx-temps{font-family:var(--sans);font-variant-numeric:tabular-nums;
+            display:flex;align-items:baseline;gap:8px;}
+  .wx-temps .hi{font-size:1.4rem;font-weight:700;color:var(--enji);}
+  .wx-temps .lo{font-size:1.05rem;font-weight:700;color:var(--ai);}
+  .wx-temps .sep{color:var(--muted);font-weight:400;font-size:.85rem;}
+  .wx-pop{font-family:var(--sans);font-size:.82rem;color:var(--ink-soft);margin-left:auto;
+          text-align:right;line-height:1.6;}
+  .wx-pop b{font-size:1rem;color:var(--ai);}
+
+  /* ── 記事グリッド ─────────────── */
+  .section{margin-top:34px;}
+  .grid{display:grid;gap:0 26px;grid-template-columns:repeat(3,minmax(0,1fr));}
+  .grid.two{grid-template-columns:repeat(2,minmax(0,1fr));}
+  @media (max-width:880px){.grid,.grid.two{grid-template-columns:1fr;gap:0;}}
+  article.story{padding:0 0 20px;border-left:1px solid var(--hair);padding-left:22px;}
+  article.story:first-child{border-left:0;padding-left:0;}
+  @media (max-width:880px){
+    article.story{border-left:0;padding-left:0;padding-top:20px;border-top:1px solid var(--hair);}
+    article.story:first-child{padding-top:0;border-top:0;}
+  }
+  .story h3{font-family:var(--display);font-weight:700;font-size:1.22rem;line-height:1.5;
+            margin:0 0 4px;text-wrap:balance;}
+  .story .sode{font-family:var(--sans);font-size:.68rem;font-weight:700;letter-spacing:.16em;
+               color:var(--muted);margin:0 0 8px;}
+  .story p{margin:0 0 .8em;font-size:.9rem;line-height:1.9;text-align:justify;}
+  .src{font-family:var(--sans);font-size:.68rem;color:var(--muted);line-height:1.7;margin:0;}
+  .src a{color:var(--ai);}
+
+  /* ── 数表（不動産） ───────────── */
+  .figure-box{background:var(--tint);padding:16px 18px;margin:4px 0 12px;}
+  .figure-box h4{font-family:var(--sans);font-size:.72rem;letter-spacing:.16em;margin:0 0 10px;
+                 color:var(--ink-soft);font-weight:700;}
+  .figure-box table{width:100%;border-collapse:collapse;font-family:var(--sans);
+                    font-variant-numeric:tabular-nums;font-size:.8rem;}
+  .figure-box th{text-align:left;font-weight:400;color:var(--ink-soft);padding:5px 0;}
+  .figure-box td{text-align:right;font-weight:700;padding:5px 0;}
+  .figure-box tr+tr th,.figure-box tr+tr td{border-top:1px solid var(--hair);}
+  .figure-box .cap{font-family:var(--sans);font-size:.66rem;color:var(--muted);margin:10px 0 0;line-height:1.7;}
+
+  /* ── コラム ───────────────────── */
+  .column{margin-top:36px;display:grid;grid-template-columns:minmax(0,1.35fr) minmax(0,1fr);gap:0 30px;
+          border-top:3px double var(--rule);padding-top:24px;}
+  @media (max-width:900px){.column{grid-template-columns:1fr;gap:26px;}}
+  .yoroku{border:1px solid var(--rule);padding:22px 24px;background:var(--tint);}
+  .yoroku h3{font-family:var(--display);font-size:1.05rem;margin:0 0 12px;letter-spacing:.3em;
+             font-weight:700;padding-bottom:8px;border-bottom:1px solid var(--rule);}
+  .yoroku p{margin:0 0 .9em;font-size:.92rem;line-height:2;text-align:justify;}
+  .yoroku p:last-of-type{margin-bottom:0;}
+  .yoroku .sign{font-family:var(--sans);font-size:.68rem;color:var(--muted);margin-top:14px;text-align:right;}
+
+  .sources h3{font-family:var(--sans);font-size:.76rem;letter-spacing:.2em;margin:0 0 12px;font-weight:700;}
+  .sources ol{margin:0;padding-left:1.3em;font-family:var(--sans);font-size:.76rem;line-height:1.95;color:var(--muted);}
+  .sources li{margin-bottom:.35em;}
+  .notice{margin-top:22px;padding:14px 16px;border:1px solid var(--hair);
+          font-family:var(--sans);font-size:.72rem;line-height:1.9;color:var(--muted);}
+  .notice b{color:var(--ink-soft);font-weight:700;letter-spacing:.1em;}
+  @media (prefers-reduced-motion:no-preference){
+    .sheet{animation:rise .5s ease-out both;}
+    @keyframes rise{from{opacity:.55;transform:translateY(6px);}to{opacity:1;transform:none;}}
+  }
+
+  /* ── 段組み紙面（相場欄以降） ──── */
+  .broadsheet{columns:3;column-gap:28px;column-rule:1px solid var(--hair);margin-top:30px;}
+  @media (max-width:1000px){.broadsheet{columns:2;}}
+  @media (max-width:700px){.broadsheet{columns:1;}}
+  .broadsheet .grid,.broadsheet .grid.two,.broadsheet .column{display:block;}
+  .broadsheet .column{border-top:0;padding-top:0;margin-top:0;}
+  .broadsheet .section{margin:0 0 6px;}
+  .broadsheet .page-label{break-after:avoid;page-break-after:avoid;margin-bottom:12px;}
+  .broadsheet article.story{border-left:0;border-top:0;padding:0 0 18px;margin:0;
+                            break-inside:avoid;page-break-inside:avoid;}
+  .broadsheet .yoroku,.broadsheet .sources{break-inside:avoid;page-break-inside:avoid;
+                                           margin:0 0 18px;}
+  .broadsheet .figure-box{break-inside:avoid;page-break-inside:avoid;}
+  .broadsheet .figure-box th{font-size:.74rem;line-height:1.5;padding-right:8px;}
+  .broadsheet .figure-box td{font-size:.78rem;white-space:nowrap;}
+  .broadsheet .story p{text-align:left;}
+
+  /* ── 印刷（PDF） ────────────────── */
+  @page{size:A3 portrait;margin:14mm 13mm;}
+  @media print{
+    :root{
+      --paper:#FFFFFF; --panel:#FFFFFF; --ink:#000000; --ink-soft:#33362F;
+      --muted:#5E6157; --rule:#B9B7AA; --hair:#D2D0C4; --tint:#F0EFE7;
+      --ai:#23407F; --enji:#8C2B3A;
+    }
+    *{-webkit-print-color-adjust:exact;print-color-adjust:exact;}
+    body{background:#fff;}
+    .sheet{max-width:none;padding:0;box-shadow:none;animation:none;}
+    article.story,.figure-box,.yoroku,.notice,.rail{break-inside:avoid;}
+    .story h3,.lead-head,.page-label{break-after:avoid;}
+    .section{break-inside:auto;}
+    .column{break-before:auto;}
+    .two-col{columns:3;}
+    .two-col p{text-align:left;}
+    .lede{columns:2;column-gap:32px;}
+
+    /* 相場・指標は紙面幅いっぱいの2段組みに */
+    .top{grid-template-columns:1fr;gap:0;}
+    .rail{border-left:0;padding-left:0;margin-top:22px;padding-top:16px;
+          border-top:1px solid var(--ink);break-inside:avoid;page-break-inside:avoid;}
+    .quotes{columns:2;column-gap:32px;column-rule:1px solid var(--hair);}
+    .rail-note{columns:2;column-gap:32px;}
+    .wx-today{break-inside:avoid;page-break-inside:avoid;}
+  }
+</style>
+
+
+<div class="sheet">
+
+  <header class="masthead">
+    <div class="title-lockup">
+      <h1 class="nameplate">けさの五面<span class="dot">・</span></h1>
+    </div>
+    <p class="colophon">
+      <b>2026年（令和8年）9月24日 木曜日</b><br>
+      第16号（第4版）／朝刊／6面立て<br>
+      編集 Claude Code ／ 出典はウェブ検索
+    </p>
+  </header>
+  <div class="hairline"></div>
+
+  <!-- ── 一面トップ ── -->
+  <div class="top">
+    <div class="lead">
+      <p class="kicker">一面トップ ／ 人工知能</p>
+      <h2 class="lead-head">「人類へのリスクになりうる」安保理でAI企業トップが証言</h2>
+      <p class="lead-sub">アルトマン氏とアモデイ氏、国際的な安全基準を訴え<br>前日にトランプ氏は「グローバリストの陰謀」と一蹴</p>
+      <p class="lede">
+        国連安全保障理事会は23日（日本時間24日未明）、「AIの将来と国際安全保障」をテーマに公開ブリーフィングを開いた。OpenAIのサム・アルトマンCEOが議場に立ち、Anthropicのダリオ・アモデイCEOはビデオで参加した。AIを作る企業のトップが安保理の15か国に直接リスクを説明するのは異例のことで、中国のDeepSeekとMoonshot AI（Kimiの開発元）にも発言の機会が設けられた。
+      </p>
+      <div class="two-col">
+        <p>アモデイ氏は「管理を誤れば、AIは人類全体にとってのリスクになりうるとさえ考えている」と述べた。アルトマン氏は「私たちは未来の主導権をAIに奪われるかもしれない」と語った。報道によると、両氏はAIが自らを改良して人間の制御を超える可能性に備え、各国が協調して安全基準と実効性のある歯止めを設けるよう求めた。AIの力が一つの企業や一つの国に集中しないようにすべきだ、という点でも一致した。</p>
+        <p>アルトマン氏は、高性能モデルを評価する共通の基準づくりを提案した。一方で、技術の進歩を遅らせる規制には慎重で、減速をめぐる議論では「中道」の立場を示したとされる。会合は議長国フランスが主催し、バロ外相が議長を務めた。Hugging Faceのクレモン・ドゥラング氏や、国連AIパネル共同議長のヨシュア・ベンジオ氏も説明者に名を連ねた。公開ブリーフィングなので、決議のような拘束力のある成果は出ない。</p>
+        <p>対照的だったのが米国政府の姿勢だ。トランプ大統領は22日の国連演説などで、AIの国際的な監視を「グローバリストの陰謀」と退け、AIの存亡リスク論を「でっち上げ」と呼んだ。「産業革命より大きくなるものの成長を妨げるつもりはない」とも述べ、アモデイ氏を名指しで批判している。欧州の20人を超える首脳は拘束力のある安全対策を求めたが、米国と中国は棄権した。</p>
+        <p>24日には習近平国家主席がホワイトハウスを訪れ、米中首脳会談が開かれる。ブルームバーグは、両国ともAIの安全性には関心を示しつつ、開発競争のブレーキは踏めないとみていると伝えた。安保理で企業が求めた「協調」と、首脳会談で国家が守る「競争」がどう折り合うかは、産業面の記事とあわせて見ておきたい。</p>
+      </div>
+      <p class="src">出典：<a href="https://www.wsls.com/news/world/2026/09/23/heads-of-ai-firms-tell-un-security-council-that-it-could-be-a-risk-to-all-humanity/">AP（WSLS転載）</a>／<a href="https://www.bloomberg.com/news/articles/2026-09-23/altman-amodei-call-for-global-cooperation-on-ai-to-boost-safety">Bloomberg</a>／<a href="https://fortune.com/2026/09/23/trump-un-ai-globalist-scheme-altman-amodei-security-council/">Fortune</a>／<a href="https://abcnews.com/Politics/ai-ceos-brief-security-council-wednesday/story?id=136661028">ABC News</a>／<a href="https://www.bloomberg.com/news/articles/2026-09-23/xi-and-trump-seek-safe-ai-without-slowing-the-race-for-supremacy">Bloomberg（米中とAI）</a></p>
+    </div>
+
+    <aside class="rail">
+      <div class="page-label"><span class="mark"></span><h2>相場・指標</h2><span class="fill"></span></div>
+      <div class="quotes">
+        <div class="q"><span class="n">日経平均株価<br><span class="unit">（18日終値・連休明け24日再開）</span></span><span class="vv"><span class="v">65,018.95 <span class="unit">円</span></span><span class="d">—</span></span></div>
+        <div class="q"><span class="n">NYダウ<br><span class="unit">（23日終値）</span></span><span class="vv"><span class="v">51,511.59 <span class="unit">ドル</span></span><span class="d dn">−352.10</span></span></div>
+        <div class="q"><span class="n">円相場<br><span class="unit">（23日NY引け）</span></span><span class="vv"><span class="v">158.40 <span class="unit">円</span></span><span class="d up">＋0.80</span></span></div>
+        <div class="q"><span class="n">日本国債10年<br><span class="unit">（18日・連休中）</span></span><span class="vv"><span class="v">2.985 <span class="unit">%</span></span><span class="d">—</span></span></div>
+        <div class="q"><span class="n">米国債10年<br><span class="unit">（24日4:50）</span></span><span class="vv"><span class="v">5.107 <span class="unit">%</span></span><span class="d up">＋0.147</span></span></div>
+        <div class="q"><span class="n">ビットコイン<br><span class="unit">（23日10時ET・ドル建て）</span></span><span class="vv"><span class="v">85,686 <span class="unit">ドル</span></span><span class="d dn">−0.41%</span></span></div>
+        <div class="q"><span class="n">フラット35<br><span class="unit">（買取型・9月）</span></span><span class="vv"><span class="v">3.460 <span class="unit">%</span></span><span class="d up">＋0.170</span></span></div>
+        <div class="q"><span class="n">変動金利<br><span class="unit">（メガバンク平均・9月）</span></span><span class="vv"><span class="v">1.248 <span class="unit">%</span></span><span class="d">—</span></span></div>
+        <div class="q"><span class="n">Claude Opus 5.5 API<br><span class="unit">（入力／出力・100万トークン）</span></span><span class="vv"><span class="v">$4 / $20</span><span class="d dn">−20%</span></span></div>
+        <div class="q"><span class="n">GPT-6 Sol API<br><span class="unit">（入力／出力・100万トークン）</span></span><span class="vv"><span class="v">$2 / $10</span><span class="d dn">−50%</span></span></div>
+      </div>
+      <p class="rail-note">米国の9月PMI速報値が製造業57.0、サービス業58.7と市場予想を大きく上回り、約5年ぶりの高さとなった。FRBのバー理事が追加利上げの必要性に触れたことや、5年債入札の不調も重なって、米国債10年利回りは5.1%台と2007年以来の水準に上がった。株は売られ、ナスダックは1.1%安。円は158円40銭まで下がった。東京市場は4連休明けの24日に取引を再開する。<br>右端は前日比。フラット35は前月比、ビットコインは24時間の変化率、API価格は前世代モデル（Opus 5／GPT-5.6 Sol）比。「—」は前日比を確認できなかったか、休場・据え置きのため変動がないもの。</p>
+
+      <div class="wx">
+        <div class="page-label"><span class="mark"></span><h2>天気</h2><span class="fill"></span><span class="meta">東京・24日</span></div>
+        <div class="wx-today">
+          <span class="wx-icon" aria-hidden="true">🌦️</span>
+          <span class="wx-cond">晴のち雨</span>
+          <span class="wx-temps"><span class="hi">29℃</span><span class="sep">／</span><span class="lo">19℃</span></span>
+          <span class="wx-pop">降水確率<br><b>50%</b></span>
+        </div>
+        <p class="rail-note"><b>きょう24日</b>　関東・東海の雨は明け方までにやみ、関東から九州は晴れ間が広がる。東京は晴のち雨で最高29℃、最低19℃。降水確率は0〜6時40%、6〜12時20%、12〜18時10%、18〜24時50%で、夜は再び雨の可能性がある。北陸から東北にかけては23日夜から24日にかけて線状の雨雲がかかり、大雨となる所がある。北海道は前線の通過で雨や雷雨となる。<br><b>あす25日</b>　東京は曇一時雨で最高26℃、最低21℃。降水確率は日中40%、夜80%。26日（土）ごろからは秋雨前線が本州付近にとどまりやすくなり、関東〜九州で10月はじめまで雨の日が多くなる見込み。フィリピンの東の熱帯低気圧は24時間以内に台風26号になる見通しで、来週はじめに強い勢力で沖縄に近づくおそれがある。台風25号の被害地（千葉県・伊豆諸島）では地盤の緩みが続いている。</p>
+        <p class="src" style="margin-top:8px;">出典：<a href="https://tenki.jp/forecast/3/16/4410/13113/">日本気象協会 tenki.jp（24日5時発表）</a>／<a href="https://tenki.jp/forecaster/domoto_yukiyo/2026/09/23/40722.html">tenki.jp 日直予報士（23日）</a>／<a href="https://weathernews.jp/news/202609/230191/">ウェザーニュース</a>／<a href="https://www.jma.go.jp/bosai/forecast/">気象庁</a></p>
+      </div>
+    </aside>
+  </div>
+
+  <!-- ══ 段組み紙面 ══ -->
+  <div class="broadsheet">
+
+  <!-- ── 技術面 ── -->
+  <section class="section">
+    <div class="page-label"><span class="mark"></span><h2>技術面</h2><span class="fill"></span><span class="meta">開発基盤・OSS</span></div>
+    <div class="grid">
+      <article class="story">
+        <p class="sode">GitHub</p>
+        <h3>新しいプルリクエスト一覧、全ユーザーに</h3>
+        <p>GitHubは21日、リポジトリのプルリクエスト一覧ページを刷新し、全ユーザー向けに一般提供した。検索はAND・ORと入れ子の条件に対応し、入力中に絞り込み条件を補ってくれる。「自分が作成したもの」「自分が関わるもの」などをまとめた折りたためるサイドバーや、1画面に多くの件数を並べるコンパクト表示も加わった。</p>
+        <p>一覧からは、ステータスチェックの件数や、積み重ねたPRの目印、未読の更新も見えるようになった。10日のパブリックプレビューの時点で足りなかったマイルストーンの表示と一括操作も、今回そろった。</p>
+        <p class="src">出典：<a href="https://github.blog/changelog/2026-09-21-refreshed-repository-pull-requests-page-generally-available/">GitHub Changelog（9月21日）</a></p>
+      </article>
+      <article class="story">
+        <p class="sode">JavaScript</p>
+        <h3>Node.js 26.10、throttleとdebounceを標準に</h3>
+        <p>Node.js 26.10.0（Current版）が22日に公開された。目玉は<code>util.throttle()</code>と<code>util.debounce()</code>の追加で、これまでnpmのパッケージに頼ってきた定番の処理が標準APIでまかなえるようになる。</p>
+        <p>.p12／.pfx形式の証明書ファイルから鍵と証明書を取り出す<code>crypto.parsePKCS12()</code>、Blobを同期的に開く<code>openAsBlobSync()</code>も入った。LTS版ではないため、本番環境に採り入れるのは長期サポート版に取り込まれてからになる。</p>
+        <p class="src">出典：<a href="https://nodejs.org/en/blog/release/v26.10.0">Node.js Blog</a>／<a href="https://qiita.com/ishisaka/items/03f3b923ba703af2e7ee">プログラミング雑記 9月23日｜Qiita</a></p>
+      </article>
+      <article class="story">
+        <p class="sode">オープンウェイト</p>
+        <h3>シャオミのMiMo-V2.6、公開モデルで首位に</h3>
+        <p>中国のシャオミは22日、大規模言語モデル「MiMo-V2.6」の重みをMITライセンスでHugging Faceに公開した。上位版のV2.6-Proは総パラメータ1.02兆、推論時に動くのは420億のMoE（専門家混合）構成だ。第三者評価サイトArtificial Analysisの総合指数で46点となり、GLM-5.3とKimi K3（いずれも44点）を抜いて、重みを公開しているモデルで首位になった。</p>
+        <p>強化学習は6日足らず、費用は約262万ドルだったという。前世代のV2.5-Proは26点で、一気に20点上げたことになる。</p>
+        <p class="src">出典：<a href="https://venturebeat.com/technology/better-than-deepseek-xiaomis-mimo-v2-6-pro-debuts-as-the-top-open-weights-model-in-the-world-alongside-cheaper-v2-6-flash">VentureBeat</a>／<a href="https://technode.com/2026/09/22/xiaomi-open-sources-mimo-v2-6-models-after-scaling-reinforcement-learning/">TechNode</a>／<a href="https://mixed-news.com/en/xiaomi-mimo-v2-6-pro-top-open-model-2-62m-rl-run/">The Decoder（Mixed）</a></p>
+      </article>
+      <article class="story">
+        <p class="sode">API終了</p>
+        <h3>Sora API、きょう24日で提供終了</h3>
+        <p>OpenAIの動画生成API「Sora」が24日で終わる。アプリとWeb版は4月26日に先に閉じており、2段階の撤退がこれで完了する。報道によると運用費は1日約100万ドルかかる一方、累計の収入は約210万ドルにとどまった。マーベルやピクサーのキャラクターを使えるようにするディズニーとの提携も、あわせて終わる。</p>
+        <p>OpenAIは計算資源を、コーディングや企業向けの製品に振り向ける。生成した動画を使っている開発者は、期限までにデータを書き出しておく必要がある。</p>
+        <p class="src">出典：<a href="https://help.openai.com/en/articles/20001152-what-to-know-about-the-sora-discontinuation">OpenAI Help Center</a>／<a href="https://startupfortune.com/openai-shuts-down-soras-api-this-week-ending-its-billion-dollar-disney-deal/">Startup Fortune</a></p>
+      </article>
+    </div>
+  </section>
+
+  <!-- ── 産業面 ── -->
+  <section class="section">
+    <div class="page-label"><span class="mark"></span><h2>産業面</h2><span class="fill"></span><span class="meta">米中・半導体・端末</span></div>
+    <div class="grid">
+      <article class="story">
+        <p class="sode">米中首脳会談</p>
+        <h3>きょう会談、AIの「安全対話」も議題に</h3>
+        <p>習近平国家主席のホワイトハウス訪問は2015年以来となる。関税、半導体の輸出規制、レアアース（希土類）の供給、台湾への武器売却が主な論点で、AIの安全性をめぐる米中対話も議題に上る見通しだ。前日にはベッセント財務長官が中国の何立峰副首相とふたたび会談し、経済協議の地ならしを進めた。</p>
+        <p>中国側は技術規制の緩和を、米国側は重要鉱物の安定調達と最先端AIの歯止めを求めている。晩さん会にはエヌビディアのフアン氏やOpenAIのアルトマン氏のほか、グーグルのピチャイ氏、アップルのクック氏、テスラのマスク氏らも招かれた。</p>
+        <p class="src">出典：<a href="https://financefeeds.com/xi-reaches-the-white-house-on-24-september-as-huang-and-altman-join-state-dinner/">FinanceFeeds</a>／<a href="https://www.cnbc.com/2026/09/23/trump-xi-meeting-ai-safety-chips-us-china-dialogue.html">CNBC</a>／<a href="https://fx.minkabu.jp/news/379745">みんかぶ（NY時間の発言・ニュース）</a></p>
+      </article>
+      <article class="story">
+        <p class="sode">メモリ</p>
+        <h3>マイクロン、30日決算へ 売上500億ドル見込み</h3>
+        <p>米マイクロン・テクノロジーは9月30日に2026年6〜8月期（第4四半期）の決算を発表する。同社は6月、この四半期の売上高を500億ドル（上下10億ドル）、調整後1株利益を31ドル（同1ドル）と見込んでいた。21日時点の市場予想は売上高約506億ドル、1株利益31.27ドルで、会社予想の中央値をやや上回る。</p>
+        <p>8月に終わった2026年度通期の売上高は、前年度の約3.5倍の1,297億ドルになったとみられている。AI向けのメモリー需要がどこまで続くかを測る材料になりそうだ。</p>
+        <p class="src">出典：<a href="https://investors.micron.com/news/press-release/2026/Micron-Technology-to-Report-Fiscal-Fourth-Quarter-Results-on-September-30-2026/default.aspx">Micron（IR）</a>／<a href="https://www.vantagemarkets.com/market-news/micron-fiscal-q4-earnings-30-september-2026-september-23-2026/">Vantage Markets</a>／<a href="https://www.fool.com/investing/2026/09/18/micron-is-poised-to-surge-after-its-fiscal-year-en/">The Motley Fool</a></p>
+      </article>
+      <article class="story">
+        <p class="sode">ウエアラブル</p>
+        <h3>Meta Connect開幕、カメラなし眼鏡を予告</h3>
+        <p>メタ・プラットフォームズの年次開発者会議「Meta Connect 2026」が23〜24日、米メンローパークの本社で開かれる。ザッカーバーグCEOの基調講演は23日午後4時（日本時間24日午前8時）からで、同社として初めてカメラを持たないスマート眼鏡を発表するとみられる。マイクを6基積み、AIアシスタントとの会話に特化した製品になる見込みだ。</p>
+        <p>上位機種「Phoenix」やAIアシスタント「ミューズ」の新機能も話題にのぼる。ゲーム向けの次期ヘッドセットQuest 4は2027年に延びた。</p>
+        <p class="src">出典：<a href="https://roadtovr.com/meta-connect-2026-date-announcement/">Road to VR</a>／<a href="https://www.engadget.com/2262932/what-to-expect-at-meta-connect-2026-new-ai-glasses-a-mixed-reality-headset-and-more/">Engadget</a></p>
+      </article>
+    </div>
+  </section>
+
+  <!-- ── 不動産面 ── -->
+  <section class="section">
+    <div class="page-label"><span class="mark"></span><h2>不動産面</h2><span class="fill"></span><span class="meta">中古・金利</span></div>
+    <div class="grid two">
+      <article class="story">
+        <p class="sode">中古マンション</p>
+        <h3>「駅徒歩10分」で㎡単価に27%の差</h3>
+        <p>東京23区の中古マンションでは、駅から歩いて10分以内の物件と10分を超える物件とで、1㎡あたりの価格に27.1%の開きがあるとするデータが22日に報じられた。駅からの距離が価格を分ける「壁」として、徒歩10分が目立って効いているという。</p>
+        <p>中古市場はいま、売りに出る在庫が増え、成約は減る局面にある。買い手が選べる状況では、駅から遠いといった弱みが値引き交渉で響きやすい。価格が上がり続けた時期には目立たなかった物件ごとの差が、表に出始めている。</p>
+        <p class="src">出典：<a href="https://news.livedoor.com/topics/detail/32385075/">ライブドアニュース（9月22日）</a></p>
+      </article>
+      <article class="story">
+        <p class="sode">住宅ローン</p>
+        <h3>米30年ローン7.26%、日本の固定にも波及か</h3>
+        <p>米国債10年利回りが23日に5.1%台と2007年以来の高さになり、米国の30年固定の住宅ローン金利は7.26%と約2年ぶりの水準に上がった。住宅の買いやすさへの懸念が改めて強まっている。</p>
+        <p>日本の固定型ローンも長期金利を目安に決まる。フラット35は9月に3.460%へ上がり、10月は3.6%台への上昇が予想されている。米金利の上昇が日本の長期金利をさらに押し上げれば、固定型の負担はもう一段重くなる。東京市場は24日に再開し、国債利回りの反応が最初の手がかりになる。</p>
+        <div class="figure-box">
+          <h4>日米の長期金利と住宅ローン金利</h4>
+          <table>
+            <tbody>
+              <tr><th>米国債10年（24日4:50）</th><td>5.107 %</td></tr>
+              <tr><th>米30年固定住宅ローン（23日）</th><td>7.26 %</td></tr>
+              <tr><th>日本国債10年（18日）</th><td>2.985 %</td></tr>
+              <tr><th>フラット35（買取型・9月）</th><td>3.460 %</td></tr>
+            </tbody>
+          </table>
+          <p class="cap">米国債は日経マーケットデータ、米住宅ローン金利はYahoo Finance、日本の値は前号までの掲載値。日米の長期金利差は約2.1ポイント。</p>
+        </div>
+        <p class="src">出典：<a href="https://finance.yahoo.com/markets/live/stock-market-today-wednesday-september-23-dow-sp-500-nasdaq-080556640.html">Yahoo Finance（9月23日）</a>／<a href="https://www.nikkei.com/marketdata/quote/US10YT/">日経マーケットデータ</a>／<a href="https://diamond-fudosan.jp/articles/-/1113325">ダイヤモンド不動産研究所</a></p>
+      </article>
+    </div>
+  </section>
+
+  <!-- ── 総合面 ── -->
+  <section class="section">
+    <div class="page-label"><span class="mark"></span><h2>総合面</h2><span class="fill"></span><span class="meta">市況・外交・気象</span></div>
+    <div class="grid">
+      <article class="story">
+        <p class="sode">市況</p>
+        <h3>米長期金利5.1%、07年以来の高さ</h3>
+        <p>23日のニューヨーク市場で米国債10年利回りが急上昇し、5.1%台と2007年以来の水準になった。9月の米PMI速報値が製造業57.0（予想53.7）、サービス業58.7（同55.8）と強く、FRBのバー理事は「インフレを適時に目標へ戻すため、さらなる政策調整が必要になる可能性が高い」と述べた。10月の利上げを見込む確率は7割程度に高まった。</p>
+        <p>ダウ平均は352.10ドル安の5万1,511.59ドル、ナスダックは1.1%安の2万6,936.04で終えた。北海ブレント原油は1バレル98ドル前後。円は157円76銭から158円40銭まで売られた。介入への警戒から円売りはそこで止まっている。</p>
+        <p class="src">出典：<a href="https://finance.yahoo.com/markets/live/stock-market-today-wednesday-september-23-dow-sp-500-nasdaq-080556640.html">Yahoo Finance</a>／<a href="https://www.zaikei.co.jp/article/20260924/870922.html">9月23日のNY為替概況｜財経新聞</a>／<a href="https://fx.minkabu.jp/news/379733">みんかぶ</a></p>
+      </article>
+      <article class="story">
+        <p class="sode">外交</p>
+        <h3>日米首脳が35分会談、同盟強化を確認</h3>
+        <p>高市早苗首相は22日（日本時間23日未明）、ニューヨークでトランプ大統領と約35分会談した。24日の米中首脳会談を前に、日米同盟をさらに強める方針を確かめた。AI、半導体、重要鉱物などの経済安全保障で協力を進めることで一致し、関税合意を着実に実行する重要性も確認した。北朝鮮の非核化と拉致問題の解決にはトランプ氏から支持を得た。</p>
+        <p>国際刑事裁判所（ICC）をめぐっては「率直なやりとり」があったとされる。首相は国連の一般討論演説で、法の支配に基づく国際秩序への貢献を訴えた。新たな投資額などの発表はなかった。</p>
+        <p class="src">出典：<a href="https://www.nikkei.com/article/DGXZQOUA221I60S6A920C2000000/">日本経済新聞</a>／<a href="https://www.nikkei.com/article/DGXZQOUA222OT0S6A920C2000000/">冒頭発言全文｜日本経済新聞</a>／<a href="https://news.web.nhk/newsweb/na/nd-20260923de52038">NHKニュース</a></p>
+      </article>
+      <article class="story">
+        <p class="sode">気象</p>
+        <h3>「台風26号」発生へ、沖縄に接近か</h3>
+        <p>気象庁は23日、フィリピンの東の熱帯低気圧が24時間以内に台風になる見込みだと発表した。発生すれば今月3つ目の台風で、台風26号となる。23日9時の中心気圧は1008ヘクトパスカル、最大風速は15メートル。発達しながら西へ進み、来週はじめには強い勢力で沖縄に近づく可能性がある。最大瞬間風速50メートルの予想も出ている。</p>
+        <p>関東に大きな被害を出した台風25号は温帯低気圧に変わった。本州は26日ごろから秋雨前線の影響を受けやすくなる。</p>
+        <p class="src">出典：<a href="https://weathernews.jp/news/202609/230191/">ウェザーニュース</a>／<a href="https://news.yahoo.co.jp/articles/b5811b1a5435753ba7c0893158e161b35b3ddf25">RSK山陽放送（Yahoo!ニュース）</a>／<a href="https://www.data.jma.go.jp/typhoon/position_table/table2026.html">気象庁 台風位置表</a></p>
+      </article>
+    </div>
+  </section>
+
+  <!-- ── 文化面 ── -->
+  <section class="section">
+    <div class="page-label"><span class="mark"></span><h2>文化面</h2><span class="fill"></span><span class="meta">音楽・アニメ</span></div>
+    <div class="grid">
+      <article class="story">
+        <p class="sode">ライブ会場</p>
+        <h3>アップル、ロンドンに600人のホール</h3>
+        <p>米アップルは22日、ロンドンのバタシー発電所跡に収容600人のライブ会場「Apple Music Hall」を設けると発表した。38フィート（約11.6メートル）の舞台は正面向きにも円形にも組め、48基のスピーカーによる空間オーディオを備える。録音・ミキシング用のスタジオが2室、16台以上のカメラを扱える中継室もある。</p>
+        <p>ここで演奏したアーティストは、空間オーディオの録音と放送用のミックス、複数カメラの映像を持ち帰れる。配信で聴かれる時代に、ライブ会場そのものを作品を生む場にする試みといえる。</p>
+        <p class="src">出典：<a href="https://www.musicbusinessworldwide.com/apple-to-open-600-capacity-live-music-venue-in-london-with-two-recording-studios-and-a-broadcast-control-room-built-in/">Music Business Worldwide（9月22日）</a></p>
+      </article>
+      <article class="story">
+        <p class="sode">チャート</p>
+        <h3>INI、初週82万枚でHot 100首位</h3>
+        <p>23日に公開されたBillboard JAPANの総合ソング・チャート「JAPAN Hot 100」（集計期間9月14〜20日）で、INIの「You Know What To Do」が首位となった。16日発売の9thシングル『ANTHEM』の表題曲で、初週82万3,028枚を売り上げてセールス1位。50万枚超えは10作連続となる。ラジオとダウンロードでも2位に入り、グループとして7曲目の首位を得た。</p>
+        <p>急上昇チャート「Hot Shot Songs」ではBE:FIRSTの「WATCH ME feat. BIA」が1位だった。</p>
+        <p class="src">出典：<a href="https://www.billboard.com/music/chart-beat/ini-you-know-what-to-do-japan-hot-100-1236345676/">Billboard</a>／<a href="https://www.billboard-japan.com/d_news/detail/165786">Billboard JAPAN</a></p>
+      </article>
+      <article class="story">
+        <p class="sode">新譜</p>
+        <h3>折坂悠太、新曲「せぞん」を配信</h3>
+        <p>シンガーソングライターの折坂悠太が23日、2曲入りのシングル『せぞん』を配信で出した。表題曲は、めぐる時間と積み重ねた月日を重厚なアンサンブルで描く。カップリングの「べっ甲」はブラジル音楽のリズムとコード感を軸にしている。</p>
+        <p>10月には独演会を開く。25日の東京・SGC HALL ARIAKEには柴田聡子、31日の大阪・サンケイホールブリーゼにはbutajiがゲストで出演する。大阪公演は売り切れている。</p>
+        <p class="src">出典：<a href="https://mag.digle.tokyo/news/285455">DIGLE MAGAZINE</a></p>
+      </article>
+      <article class="story">
+        <p class="sode">興行</p>
+        <h3>『映画ちいかわ』158億円、今年の首位に</h3>
+        <p>『映画ちいかわ 人魚の島のひみつ』は、7月24日の公開から20日までの59日間で興行収入158.4億円、動員1,085.7万人となった。興行通信社の集計で、2026年に公開された映画の首位になる。</p>
+        <p>海外展開も進む。19日に英語の公式YouTubeチャンネルが開設され、10月1日からはテレビアニメ版の英語吹き替えを全話配信する。朝の情報番組の中の短いアニメとして2022年に始まった作品が、劇場と配信の両方で広がっている。</p>
+        <p class="src">出典：<a href="https://animeanime.jp/article/2026/09/22/103143.html">アニメ！アニメ！（9月22日）</a>／<a href="https://www.animenewsnetwork.com/news/2026-09-23/chiikawa-film-earns-15.84-billion-yen-tv-anime-streams-english-dub-on-youtube-on-october-1/.242099">Anime News Network</a></p>
+      </article>
+      <article class="story">
+        <p class="sode">テレビアニメ</p>
+        <h3>『片田舎のおっさん、剣聖になる』第3期へ</h3>
+        <p>7月8日から放送された『片田舎のおっさん、剣聖になる』第2期（全12話）が23日に最終回を迎え、第3期の制作が発表された。主人公ベリルの新しいキービジュアルと、声を担当する平田広明のビデオメッセージも公開された。</p>
+        <p>第2期のアニメーション制作はパッショーネとハヤブサフィルム。原作の佐賀崎しげる・鍋島テツヒロによるライトノベルは、8月までに11巻が刊行されている。配信はPrime Videoが担った。</p>
+        <p class="src">出典：<a href="https://anitrendz.net/news/2026/09/23/from-old-country-bumpkin-to-master-swordsman-receives-3rd-season/">AniTrendz（9月23日）</a></p>
+      </article>
+    </div>
+  </section>
+
+  <!-- ── コラム ── -->
+  <div class="column">
+    <div class="yoroku">
+      <h3>余録</h3>
+      <p>ブレーキは、誰が踏むものなのか。23日の国連安保理で、AIを作る企業のトップが「人類全体へのリスクになりうる」と訴え、各国に歯止めを求めた。その前日、米国の大統領は国際的な監視を「グローバリストの陰謀」と退けている。作る側がブレーキを求め、国が踏まないと言う。きょうの米中首脳会談でも、両国とも開発競争を緩める気はないとみられている。</p>
+      <p>経済には、もともと備わったブレーキがある。金利だ。同じ23日、米国の景況感指数が予想を大きく上回り、米国債10年利回りは2007年以来の5.1%台に跳ねた。FRBの理事は追加利上げに言及し、米国の30年住宅ローン金利は7.26%になった。こちらのブレーキは誰かの意思を待たず、景気が熱くなれば自然に効き始める。</p>
+      <p>そして、ブレーキはどこにでも同じように効くわけではない。東京23区の中古マンションでは、駅から徒歩10分を境に㎡単価が27%違うという。価格が上がり続けるあいだは目立たなかった差が、金利が上がって在庫が増えると値引き交渉の場で表に出てくる。最初に効くのは、弱いところからだ。</p>
+      <p>文化面には逆の話がある。『映画ちいかわ』は公開から59日で158億円を集め、今年の首位になった。アップルはロンドンに600人のホールを作り、そこで演奏した記録を丸ごと作品にしようとしている。人が足を運ぶ場所には、景気のブレーキがかかりにくいらしい。駅から10分の差も、劇場やホールへの距離なら人は気にしないのかもしれない。</p>
+      <p class="sign">──けさの五面</p>
+    </div>
+    <div class="sources">
+      <div class="page-label"><span class="mark"></span><h2>本日の出典</h2><span class="fill"></span></div>
+      <ol>
+        <li><a href="https://www.wsls.com/news/world/2026/09/23/heads-of-ai-firms-tell-un-security-council-that-it-could-be-a-risk-to-all-humanity/">Heads of AI firms tell UN Security Council｜AP（WSLS）</a></li>
+        <li><a href="https://www.bloomberg.com/news/articles/2026-09-23/altman-amodei-call-for-global-cooperation-on-ai-to-boost-safety">Altman, Amodei Call for Global Cooperation on AI｜Bloomberg</a></li>
+        <li><a href="https://fortune.com/2026/09/23/trump-un-ai-globalist-scheme-altman-amodei-security-council/">Trump calls AI oversight a 'globalist scheme'｜Fortune</a></li>
+        <li><a href="https://abcnews.com/Politics/ai-ceos-brief-security-council-wednesday/story?id=136661028">AI CEOs to brief UN Security Council｜ABC News</a></li>
+        <li><a href="https://www.bloomberg.com/news/articles/2026-09-23/xi-and-trump-seek-safe-ai-without-slowing-the-race-for-supremacy">Xi and Trump Seek Safe AI Without Slowing the Race｜Bloomberg</a></li>
+        <li><a href="https://github.blog/changelog/2026-09-21-refreshed-repository-pull-requests-page-generally-available/">Refreshed pull requests page GA｜GitHub Changelog</a></li>
+        <li><a href="https://nodejs.org/en/blog/release/v26.10.0">Node.js 26.10.0 (Current)｜Node.js</a></li>
+        <li><a href="https://qiita.com/ishisaka/items/03f3b923ba703af2e7ee">プログラミング雑記 2026年9月23日｜Qiita</a></li>
+        <li><a href="https://venturebeat.com/technology/better-than-deepseek-xiaomis-mimo-v2-6-pro-debuts-as-the-top-open-weights-model-in-the-world-alongside-cheaper-v2-6-flash">Xiaomi's MiMo-V2.6-Pro｜VentureBeat</a></li>
+        <li><a href="https://technode.com/2026/09/22/xiaomi-open-sources-mimo-v2-6-models-after-scaling-reinforcement-learning/">Xiaomi open-sources MiMo-V2.6｜TechNode</a></li>
+        <li><a href="https://mixed-news.com/en/xiaomi-mimo-v2-6-pro-top-open-model-2-62m-rl-run/">MiMo-V2.6-Pro tops the open models｜The Decoder</a></li>
+        <li><a href="https://help.openai.com/en/articles/20001152-what-to-know-about-the-sora-discontinuation">What to know about the Sora discontinuation｜OpenAI</a></li>
+        <li><a href="https://startupfortune.com/openai-shuts-down-soras-api-this-week-ending-its-billion-dollar-disney-deal/">OpenAI Shuts Down Sora's API｜Startup Fortune</a></li>
+        <li><a href="https://financefeeds.com/xi-reaches-the-white-house-on-24-september-as-huang-and-altman-join-state-dinner/">Xi at White House 24 Sep｜FinanceFeeds</a></li>
+        <li><a href="https://www.cnbc.com/2026/09/23/trump-xi-meeting-ai-safety-chips-us-china-dialogue.html">Trump-Xi summit puts AI safety talks on the table｜CNBC</a></li>
+        <li><a href="https://fx.minkabu.jp/news/379745">NY時間に伝わった発言・ニュース｜みんかぶ</a></li>
+        <li><a href="https://investors.micron.com/news/press-release/2026/Micron-Technology-to-Report-Fiscal-Fourth-Quarter-Results-on-September-30-2026/default.aspx">Micron to Report Fiscal Q4 Results｜Micron</a></li>
+        <li><a href="https://www.vantagemarkets.com/market-news/micron-fiscal-q4-earnings-30-september-2026-september-23-2026/">Micron Fiscal Q4 Earnings Date｜Vantage Markets</a></li>
+        <li><a href="https://www.fool.com/investing/2026/09/18/micron-is-poised-to-surge-after-its-fiscal-year-en/">Micron Is Poised to Surge｜The Motley Fool</a></li>
+        <li><a href="https://roadtovr.com/meta-connect-2026-date-announcement/">Meta Connect Set for September 23–24｜Road to VR</a></li>
+        <li><a href="https://www.engadget.com/2262932/what-to-expect-at-meta-connect-2026-new-ai-glasses-a-mixed-reality-headset-and-more/">What to expect at Meta Connect 2026｜Engadget</a></li>
+        <li><a href="https://news.livedoor.com/topics/detail/32385075/">「駅徒歩10分」の壁 中古マンション価格｜ライブドアニュース</a></li>
+        <li><a href="https://finance.yahoo.com/markets/live/stock-market-today-wednesday-september-23-dow-sp-500-nasdaq-080556640.html">Stock market today, Sept 23｜Yahoo Finance</a></li>
+        <li><a href="https://www.nikkei.com/marketdata/quote/US10YT/">米国債10年 利回り｜日経マーケットデータ</a></li>
+        <li><a href="https://www.nikkei.com/marketdata/quote/DJI/">NYダウ｜日経マーケットデータ</a></li>
+        <li><a href="https://www.nikkei.com/marketdata/quote/JP10YT/">日本国債10年 利回り｜日経マーケットデータ</a></li>
+        <li><a href="https://diamond-fudosan.jp/articles/-/1113325">10月のフラット35金利予想｜ダイヤモンド不動産研究所</a></li>
+        <li><a href="https://www.zaikei.co.jp/article/20260924/870922.html">9月23日のNY為替概況｜財経新聞</a></li>
+        <li><a href="https://fx.minkabu.jp/news/379733">ドル円、158円台を回復｜みんかぶ</a></li>
+        <li><a href="https://fortune.com/article/price-of-bitcoin-09-23-2026/">Current price of Bitcoin for Sept. 23｜Fortune</a></li>
+        <li><a href="https://www.nikkei.com/article/DGXZQOUA221I60S6A920C2000000/">日米首脳35分会談、米中前に同盟確認｜日本経済新聞</a></li>
+        <li><a href="https://www.nikkei.com/article/DGXZQOUA222OT0S6A920C2000000/">日米首脳会談 冒頭発言全文｜日本経済新聞</a></li>
+        <li><a href="https://news.web.nhk/newsweb/na/nd-20260923de52038">高市首相 国連総会で演説 日米首脳会談も｜NHKニュース</a></li>
+        <li><a href="https://weathernews.jp/news/202609/230191/">台風発生予想 週末以降は沖縄方面に｜ウェザーニュース</a></li>
+        <li><a href="https://news.yahoo.co.jp/articles/b5811b1a5435753ba7c0893158e161b35b3ddf25">台風のたまご 24時間以内に台風へ｜RSK山陽放送</a></li>
+        <li><a href="https://www.data.jma.go.jp/typhoon/position_table/table2026.html">台風位置表 令和8年｜気象庁</a></li>
+        <li><a href="https://www.musicbusinessworldwide.com/apple-to-open-600-capacity-live-music-venue-in-london-with-two-recording-studios-and-a-broadcast-control-room-built-in/">Apple to open live music venue in London｜MBW</a></li>
+        <li><a href="https://www.billboard.com/music/chart-beat/ini-you-know-what-to-do-japan-hot-100-1236345676/">INI Logs Seventh No. 1 on Japan Hot 100｜Billboard</a></li>
+        <li><a href="https://www.billboard-japan.com/d_news/detail/165786">Hot Shot Songs BE:FIRST首位｜Billboard JAPAN</a></li>
+        <li><a href="https://mag.digle.tokyo/news/285455">折坂悠太『せぞん』配信リリース｜DIGLE MAGAZINE</a></li>
+        <li><a href="https://animeanime.jp/article/2026/09/22/103143.html">「映画ちいかわ」興収158.4億円｜アニメ！アニメ！</a></li>
+        <li><a href="https://www.animenewsnetwork.com/news/2026-09-23/chiikawa-film-earns-15.84-billion-yen-tv-anime-streams-english-dub-on-youtube-on-october-1/.242099">Chiikawa Film Earns 15.84 Billion Yen｜Anime News Network</a></li>
+        <li><a href="https://anitrendz.net/news/2026/09/23/from-old-country-bumpkin-to-master-swordsman-receives-3rd-season/">From Old Country Bumpkin Season 3｜AniTrendz</a></li>
+        <li><a href="https://tenki.jp/forecast/3/16/4410/13113/">東京の天気予報｜日本気象協会 tenki.jp</a></li>
+        <li><a href="https://tenki.jp/forecaster/domoto_yukiyo/2026/09/23/40722.html">26日頃から再び秋の長雨｜tenki.jp</a></li>
+        <li><a href="https://www.jma.go.jp/bosai/forecast/">天気予報｜気象庁</a></li>
+      </ol>
+      <div class="notice">
+        <b>おことわり</b><br>
+        本紙は2026年9月24日早朝にウェブ検索で集めた記事を編集したものです。各記事の数値は上記の出典に基づいており、一部は集計サイトや個人ブログなどの二次情報を含みます。一次資料での確認はしていません。投資や売買の判断に使う場合は、必ず発表元の資料を確認してください。安保理での発言は、AP通信とブルームバーグの報道に基づきます（本紙の取材時点で国連の公式記録は確認していません）。トランプ大統領の発言はFortuneの報道によります。米中首脳会談とMeta Connectの基調講演は、本紙の取材時点ではまだ始まっていません。「駅徒歩10分」の記事は、元の調査主体と対象期間を確認できませんでした。マイクロンの通期売上高は市場予想に基づく推計値です。<br>
+        相場・指標欄のうち、日経平均と日本国債10年は21〜23日の休場のため18日の値を続けて載せています。NYダウの前日比（−352.10ドル）は、Yahoo Financeの23日終値（51,511.59ドル）と22日終値（51,863.69ドル）の差を編集部で計算しました。日経マーケットデータでは取引終了直前（15:57）の値が51,510.57ドル（−353.12）でした。円相場の前日比（＋0.80円）は、前号に載せた22日NY引け（157.60円）との差を編集部で計算した参考値です。米国債10年は日経マーケットデータの24日4時50分の値です。ビットコイン（23日10時ET）はFortuneの集計値で、右端は24時間の変化率です。フラット35の前月比は8月から9月への変化です。変動金利は9月の値で、10月分は未公表です。API価格の増減は、前の世代のモデル（Opus 5：5ドル／25ドル、GPT-5.6 Sol：4ドル／20ドル）と比べたものです。「—」は前日比を確認できなかったか、休場・据え置きのため変動がないものです。<br>
+        天気欄は日本気象協会tenki.jpの24日5時発表の予報（東京都心・渋谷区の地点）で、降水確率の欄には24日のうち最も高い18〜24時の値を載せています。北陸・東北の大雨、台風26号となる見込みの熱帯低気圧、台風25号の被害地の土砂災害には引き続き注意が必要です。防災上の判断は、必ず気象庁の最新の発表を確認してください。
+      </div>
+    </div>
+  </div>
+
+  </div><!-- /broadsheet -->
+
+</div>

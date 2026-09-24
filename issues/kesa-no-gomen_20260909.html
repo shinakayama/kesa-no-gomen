@@ -1,0 +1,495 @@
+<title>けさの五面</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Shippori+Mincho+B1:wght@400;600;700&family=Noto+Serif+JP:wght@400;600&family=Noto+Sans+JP:wght@400;500;700&display=swap">
+<style>
+  :root{
+    --paper:#EFEEE7;
+    --panel:#F7F6F1;
+    --ink:#181A18;
+    --ink-soft:#33362F;
+    --muted:#6C6F65;
+    --rule:#C6C4B7;
+    --hair:#D8D6CA;
+    --ai:#23407F;          /* 藍 */
+    --enji:#8C2B3A;        /* 臙脂 */
+    --tint:#E4E5DC;
+    --shadow:rgba(24,26,24,.14);
+    --serif:"Noto Serif JP","Hiragino Mincho ProN","Yu Mincho",serif;
+    --display:"Shippori Mincho B1","Noto Serif JP","Hiragino Mincho ProN",serif;
+    --sans:"Noto Sans JP","Hiragino Kaku Gothic ProN","Yu Gothic",system-ui,sans-serif;
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --paper:#14161A; --panel:#1A1D22; --ink:#E9E7DE; --ink-soft:#CFCDC3;
+      --muted:#8E9188; --rule:#3A3E45; --hair:#2C3037; --tint:#22262C;
+      --ai:#8FA9E8; --enji:#DE8290; --shadow:rgba(0,0,0,.5);
+    }
+  }
+  :root[data-theme="dark"]{
+    --paper:#14161A; --panel:#1A1D22; --ink:#E9E7DE; --ink-soft:#CFCDC3;
+    --muted:#8E9188; --rule:#3A3E45; --hair:#2C3037; --tint:#22262C;
+    --ai:#8FA9E8; --enji:#DE8290; --shadow:rgba(0,0,0,.5);
+  }
+
+  body{background:var(--paper);color:var(--ink);font-family:var(--serif);
+       -webkit-font-smoothing:antialiased;line-height:1.85;}
+  .sheet{max-width:1160px;margin:0 auto;padding:clamp(18px,3vw,40px) clamp(14px,3vw,36px) 64px;
+         background:var(--panel);box-shadow:0 0 0 1px var(--hair),0 18px 48px -34px var(--shadow);}
+  a{color:var(--ai);text-underline-offset:.18em;text-decoration-thickness:.06em;}
+  a:focus-visible{outline:2px solid var(--enji);outline-offset:3px;}
+
+  /* ── 題字 ───────────────────────── */
+  .masthead{display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:12px 28px;
+            padding-bottom:10px;border-bottom:3px solid var(--ink);}
+  .masthead::after{content:"";display:block;flex:1 0 100%;height:0;}
+  .title-lockup{display:flex;align-items:baseline;gap:14px;flex-wrap:wrap;}
+  .nameplate{font-family:var(--display);font-weight:700;font-size:clamp(2.4rem,6.4vw,3.9rem);
+             line-height:1;letter-spacing:.06em;margin:0;}
+  .nameplate .dot{color:var(--enji);}
+  .tagline{font-family:var(--sans);font-size:.72rem;letter-spacing:.28em;color:var(--muted);
+           border-left:2px solid var(--enji);padding-left:10px;line-height:1.7;}
+  .colophon{font-family:var(--sans);font-size:.72rem;color:var(--muted);text-align:right;
+            line-height:1.9;letter-spacing:.04em;font-variant-numeric:tabular-nums;}
+  .colophon b{color:var(--ink-soft);font-weight:500;}
+  .hairline{height:1px;background:var(--ink);margin-top:3px;opacity:.55;}
+
+  /* ── 面見出し ──────────────────── */
+  .page-label{display:flex;align-items:center;gap:10px;margin:0 0 14px;}
+  .page-label .mark{width:9px;height:9px;background:var(--enji);flex:none;}
+  .page-label h2{font-family:var(--sans);font-weight:700;font-size:.86rem;letter-spacing:.34em;
+                 margin:0;white-space:nowrap;}
+  .page-label .fill{flex:1;height:1px;background:var(--rule);}
+  .page-label .meta{font-family:var(--sans);font-size:.68rem;color:var(--muted);letter-spacing:.1em;}
+
+  /* ── トップ ───────────────────── */
+  .top{display:grid;grid-template-columns:minmax(0,2.05fr) minmax(0,1fr);gap:0 30px;
+       margin-top:26px;padding-bottom:26px;border-bottom:3px double var(--rule);}
+  .kicker{font-family:var(--sans);font-size:.72rem;font-weight:700;letter-spacing:.2em;
+          color:var(--enji);margin:0 0 8px;}
+  .lead-head{font-family:var(--display);font-weight:700;font-size:clamp(1.85rem,4.4vw,3rem);
+             line-height:1.32;letter-spacing:.01em;margin:0;text-wrap:balance;}
+  .lead-sub{font-family:var(--display);font-size:clamp(1rem,2vw,1.22rem);color:var(--enji);
+            margin:10px 0 0;font-weight:600;line-height:1.6;text-wrap:balance;}
+  .lede{margin:16px 0 0;padding:14px 0;border-top:1px solid var(--ink);border-bottom:1px solid var(--hair);
+        font-size:1.02rem;line-height:1.95;}
+  .two-col{columns:2;column-gap:26px;column-rule:1px solid var(--hair);margin-top:16px;}
+  .two-col p{margin:0 0 .9em;font-size:.94rem;text-align:justify;}
+  .two-col p:last-child{margin-bottom:0;}
+  @media (max-width:760px){.two-col{columns:1;}}
+
+  /* ── 相場欄 ───────────────────── */
+  .rail{border-left:1px solid var(--rule);padding-left:26px;}
+  @media (max-width:900px){
+    .top{grid-template-columns:1fr;gap:26px;}
+    .rail{border-left:0;padding-left:0;border-top:1px solid var(--rule);padding-top:20px;}
+  }
+  .q{display:flex;align-items:baseline;justify-content:space-between;gap:10px;
+     padding:7px 0;border-bottom:1px dotted var(--rule);font-family:var(--sans);
+     font-variant-numeric:tabular-nums;break-inside:avoid;page-break-inside:avoid;}
+  .q:last-child{border-bottom:0;}
+  .q .n{font-size:.79rem;font-weight:500;color:var(--ink-soft);line-height:1.55;}
+  .q .v{font-size:.82rem;font-weight:700;white-space:nowrap;text-align:right;}
+  .q.sub .n{padding-left:1.1em;color:var(--muted);}
+  .unit{font-weight:400;font-size:.72rem;color:var(--muted);margin-left:2px;}
+  .dn{color:var(--ai);} .up{color:var(--enji);}
+  .rail-note{font-family:var(--sans);font-size:.68rem;color:var(--muted);line-height:1.8;
+             margin:12px 0 0;padding-top:10px;border-top:1px solid var(--hair);}
+
+  /* ── 天気欄 ───────────────────── */
+  .wx{margin-top:24px;}
+  .wx .v{display:inline-flex;gap:14px;align-items:baseline;}
+  .wx .temp{color:var(--enji);}
+  .wx .pop{color:var(--ai);}
+  .wx-head{display:flex;justify-content:space-between;gap:10px;padding:0 0 6px;
+           font-family:var(--sans);font-size:.66rem;letter-spacing:.1em;color:var(--muted);
+           border-bottom:1px solid var(--rule);}
+
+  /* ── 記事グリッド ─────────────── */
+  .section{margin-top:34px;}
+  .grid{display:grid;gap:0 26px;grid-template-columns:repeat(3,minmax(0,1fr));}
+  .grid.two{grid-template-columns:repeat(2,minmax(0,1fr));}
+  @media (max-width:880px){.grid,.grid.two{grid-template-columns:1fr;gap:0;}}
+  article.story{padding:0 0 20px;border-left:1px solid var(--hair);padding-left:22px;}
+  article.story:first-child{border-left:0;padding-left:0;}
+  @media (max-width:880px){
+    article.story{border-left:0;padding-left:0;padding-top:20px;border-top:1px solid var(--hair);}
+    article.story:first-child{padding-top:0;border-top:0;}
+  }
+  .story h3{font-family:var(--display);font-weight:700;font-size:1.22rem;line-height:1.5;
+            margin:0 0 4px;text-wrap:balance;}
+  .story .sode{font-family:var(--sans);font-size:.68rem;font-weight:700;letter-spacing:.16em;
+               color:var(--muted);margin:0 0 8px;}
+  .story p{margin:0 0 .8em;font-size:.9rem;line-height:1.9;text-align:justify;}
+  .src{font-family:var(--sans);font-size:.68rem;color:var(--muted);line-height:1.7;margin:0;}
+  .src a{color:var(--ai);}
+
+  /* ── 数表（不動産） ───────────── */
+  .figure-box{background:var(--tint);padding:16px 18px;margin:4px 0 12px;}
+  .figure-box h4{font-family:var(--sans);font-size:.72rem;letter-spacing:.16em;margin:0 0 10px;
+                 color:var(--ink-soft);font-weight:700;}
+  .figure-box table{width:100%;border-collapse:collapse;font-family:var(--sans);
+                    font-variant-numeric:tabular-nums;font-size:.8rem;}
+  .figure-box th{text-align:left;font-weight:400;color:var(--ink-soft);padding:5px 0;}
+  .figure-box td{text-align:right;font-weight:700;padding:5px 0;}
+  .figure-box tr+tr th,.figure-box tr+tr td{border-top:1px solid var(--hair);}
+  .figure-box .cap{font-family:var(--sans);font-size:.66rem;color:var(--muted);margin:10px 0 0;line-height:1.7;}
+
+  /* ── コラム ───────────────────── */
+  .column{margin-top:36px;display:grid;grid-template-columns:minmax(0,1.35fr) minmax(0,1fr);gap:0 30px;
+          border-top:3px double var(--rule);padding-top:24px;}
+  @media (max-width:900px){.column{grid-template-columns:1fr;gap:26px;}}
+  .yoroku{border:1px solid var(--rule);padding:22px 24px;background:var(--tint);}
+  .yoroku h3{font-family:var(--display);font-size:1.05rem;margin:0 0 12px;letter-spacing:.3em;
+             font-weight:700;padding-bottom:8px;border-bottom:1px solid var(--rule);}
+  .yoroku p{margin:0 0 .9em;font-size:.92rem;line-height:2;text-align:justify;}
+  .yoroku p:last-of-type{margin-bottom:0;}
+  .yoroku .sign{font-family:var(--sans);font-size:.68rem;color:var(--muted);margin-top:14px;text-align:right;}
+
+  .sources h3{font-family:var(--sans);font-size:.76rem;letter-spacing:.2em;margin:0 0 12px;font-weight:700;}
+  .sources ol{margin:0;padding-left:1.3em;font-family:var(--sans);font-size:.76rem;line-height:1.95;color:var(--muted);}
+  .sources li{margin-bottom:.35em;}
+  .notice{margin-top:22px;padding:14px 16px;border:1px solid var(--hair);
+          font-family:var(--sans);font-size:.72rem;line-height:1.9;color:var(--muted);}
+  .notice b{color:var(--ink-soft);font-weight:700;letter-spacing:.1em;}
+  @media (prefers-reduced-motion:no-preference){
+    .sheet{animation:rise .5s ease-out both;}
+    @keyframes rise{from{opacity:.55;transform:translateY(6px);}to{opacity:1;transform:none;}}
+  }
+
+  /* ── 段組み紙面（相場欄以降） ──── */
+  .broadsheet{columns:3;column-gap:28px;column-rule:1px solid var(--hair);margin-top:30px;}
+  @media (max-width:1000px){.broadsheet{columns:2;}}
+  @media (max-width:700px){.broadsheet{columns:1;}}
+  .broadsheet .grid,.broadsheet .grid.two,.broadsheet .column{display:block;}
+  .broadsheet .column{border-top:0;padding-top:0;margin-top:0;}
+  .broadsheet .section{margin:0 0 6px;}
+  .broadsheet .page-label{break-after:avoid;page-break-after:avoid;margin-bottom:12px;}
+  .broadsheet article.story{border-left:0;border-top:0;padding:0 0 18px;margin:0;
+                            break-inside:avoid;page-break-inside:avoid;}
+  .broadsheet .yoroku,.broadsheet .sources{break-inside:avoid;page-break-inside:avoid;
+                                           margin:0 0 18px;}
+  .broadsheet .figure-box{break-inside:avoid;page-break-inside:avoid;}
+  .broadsheet .figure-box th{font-size:.74rem;line-height:1.5;padding-right:8px;}
+  .broadsheet .figure-box td{font-size:.78rem;white-space:nowrap;}
+  .broadsheet .story p{text-align:left;}
+
+  /* ── 印刷（PDF） ────────────────── */
+  @page{size:A3 portrait;margin:14mm 13mm;}
+  @media print{
+    :root{
+      --paper:#FFFFFF; --panel:#FFFFFF; --ink:#181A18; --ink-soft:#33362F;
+      --muted:#5E6157; --rule:#B9B7AA; --hair:#D2D0C4; --tint:#F0EFE7;
+      --ai:#23407F; --enji:#8C2B3A;
+    }
+    *{-webkit-print-color-adjust:exact;print-color-adjust:exact;}
+    body{background:#fff;}
+    .sheet{max-width:none;padding:0;box-shadow:none;animation:none;}
+    article.story,.figure-box,.yoroku,.notice,.rail{break-inside:avoid;}
+    .story h3,.lead-head,.page-label{break-after:avoid;}
+    .section{break-inside:auto;}
+    .column{break-before:auto;}
+    .two-col{columns:3;}
+    .two-col p{text-align:left;}
+    .lede{columns:2;column-gap:32px;}
+
+    /* 相場・指標は紙面幅いっぱいの2段組みに */
+    .top{grid-template-columns:1fr;gap:0;}
+    .rail{border-left:0;padding-left:0;margin-top:22px;padding-top:16px;
+          border-top:1px solid var(--ink);break-inside:avoid;page-break-inside:avoid;}
+    .quotes{columns:2;column-gap:32px;column-rule:1px solid var(--hair);}
+    .rail-note{columns:2;column-gap:32px;}
+    .wx-list{columns:3;column-gap:32px;column-rule:1px solid var(--hair);}
+    .wx-head{justify-content:flex-start;gap:18px;}
+  }
+</style>
+
+<div class="sheet">
+
+  <header class="masthead">
+    <div class="title-lockup">
+      <h1 class="nameplate">けさの五面<span class="dot">・</span></h1>
+      <p class="tagline">AI・開発・テック・不動産<br>経済・音楽・アニメ</p>
+    </div>
+    <p class="colophon">
+      <b>2026年（令和8年）9月9日 水曜日</b><br>
+      第1号（第4版）／朝刊／7面立て<br>
+      編集 Claude Code ／ 出典はウェブ検索
+    </p>
+  </header>
+  <div class="hairline"></div>
+
+  <!-- ── 一面トップ ── -->
+  <div class="top">
+    <div class="lead">
+      <p class="kicker">一面トップ ／ 人工知能</p>
+      <h2 class="lead-head">フロンティア3社、9月初旬に一斉更新</h2>
+      <p class="lead-sub">GPT-6 Astra 登場、コンテキスト105万トークン<br>Gemini 3.8 Flash が一般提供、Claude は Fable 5.1</p>
+      <p class="lede">
+        9月に入って最初の1週間で、主要なフロンティアモデルの顔ぶれが入れ替わった。9月1日にAnthropicがClaude Fable 5.1とMythos 5.1、2日にGoogleがGemini 3.8 Flash系の一般提供、3日にOpenAIがGPT-6 Astraを相次いで投入した。年前半のGPT-5.6三階層やGrok 4.5、Kimi K3を含め、選定表は事実上つくり直しとなる。
+      </p>
+      <div class="two-col">
+        <p>OpenAIのGPT-6 Astraは、API価格が入力100万トークンあたり10ドル、出力50ドル。コンテキスト長は1,050,000トークン、知識のカットオフは2026年4月30日とされる。長文の設計書やリポジトリ全体を一度に渡す使い方が、価格面でどこまで現実的かが当面の論点になる。</p>
+        <p>GoogleはGemini 3.8 FlashとGemini 3.8 Flash Cyberを9月2日に一般提供へ移した。軽量・高速帯を厚くする動きで、8月から続く「クラウド／オープンウェイト／軽量」の三極集中という整理と符合する。</p>
+        <p>AnthropicはClaude Fable 5.1（claude-fable-5-1）とMythos 5.1を9月1日に公開した。両者はモデルとしては同一で、セーフガードの水準が異なる位置づけとされる。同日、Sonnet 5の販促価格（100万トークンあたり入力2ドル／出力10ドル）が8月31日で終了し、通常価格の3ドル／15ドルへ戻った。値付けの巻き戻しは、実運用のコスト試算をそのまま押し上げる。</p>
+        <p>資本の側も動いている。Googleが評価額3,500億ドルで最大400億ドル、Amazonが250億ドルをAnthropicに投じたと伝えられ、10月の新規株式公開観測まで取り沙汰される。数字はいずれも報道・集計ベースで、一次資料での確認が要る段階にある。</p>
+      </div>
+      <p class="src">出典：<a href="https://mihata.jp/column/ai-models-2026-h2-roadmap">AIモデル2026まとめ</a>／<a href="https://uravation.com/media/ai-model-overview-hub-2026-june/">Uravation AIモデル一覧</a>／<a href="https://releasebot.io/updates/anthropic">Releasebot: Anthropic</a>／<a href="https://aiweekly.co/ai-news-today/anthropic-news">AI Weekly</a></p>
+    </div>
+
+    <aside class="rail">
+      <div class="page-label"><span class="mark"></span><h2>相場・指標</h2><span class="fill"></span></div>
+      <div class="quotes">
+        <div class="q"><span class="n">日経平均株価（9日終値）</span><span class="v">65,142.78 <span class="unit">円</span></span></div>
+        <div class="q sub"><span class="n">前日比</span><span class="v dn">−126.55 <span class="unit">円</span></span></div>
+        <div class="q"><span class="n">NYダウ（8日終値）</span><span class="v">52,786.07 <span class="unit">ドル</span></span></div>
+        <div class="q sub"><span class="n">前日比</span><span class="v dn">−628.18 <span class="unit">ドル</span></span></div>
+        <div class="q"><span class="n">円相場（一時）</span><span class="v">152 <span class="unit">円台／ドル</span></span></div>
+        <div class="q"><span class="n">日本国債10年<span class="unit">（9日16:39）</span></span><span class="v">2.880 <span class="unit">%</span> <span class="dn">−0.005</span></span></div>
+        <div class="q"><span class="n">米国債10年<span class="unit">（9日17:47）</span></span><span class="v">4.802 <span class="unit">%</span> <span class="up">+0.011</span></span></div>
+        <div class="q"><span class="n">ビットコイン（8日終値）</span><span class="v">12,041,370 <span class="unit">円</span></span></div>
+        <div class="q"><span class="n">フラット35（買取型）</span><span class="v up">3.460 <span class="unit">%</span></span></div>
+        <div class="q"><span class="n">変動金利・大手5行平均</span><span class="v">1.163 <span class="unit">%</span></span></div>
+        <div class="q"><span class="n">首都圏新築マンション<br>平均価格（7月）</span><span class="v up">16,493 <span class="unit">万円</span></span></div>
+        <div class="q"><span class="n">同・㎡単価（7月）</span><span class="v up">236.9 <span class="unit">万円</span></span></div>
+        <div class="q"><span class="n">首都圏中古マンション<br>成約価格（7月）</span><span class="v">5,267 <span class="unit">万円</span></span></div>
+        <div class="q"><span class="n">GPT-6 Astra API<br>（入力／出力・100万トークン）</span><span class="v">$10 / $50</span></div>
+      </div>
+      <p class="rail-note">NYダウは対イラン情勢の悪化で原油が一時94ドルまで上昇し、インフレ再燃と長期金利上昇を警戒して続落。円相場は7か月ぶりの円高水準。ビットコインは弱地合いが続く。マンション価格は東京23区の大型・高額物件が平均を押し上げており、前年同月比の伸び（平均価格＋63.7%）はそのまま実勢とは読めない。</p>
+
+      <div class="wx">
+        <div class="page-label"><span class="mark"></span><h2>天気</h2><span class="fill"></span><span class="meta">9日</span></div>
+        <div class="wx-head"><span>都市</span><span>最高気温　降水確率</span></div>
+        <div class="wx-list">
+          <div class="q"><span class="n">札幌</span><span class="v"><span class="temp">24 ℃</span><span class="pop">5 %</span></span></div>
+          <div class="q"><span class="n">東京</span><span class="v"><span class="temp">23 ℃</span><span class="pop">55 %</span></span></div>
+          <div class="q"><span class="n">名古屋</span><span class="v"><span class="temp">27 ℃</span><span class="pop">90 %</span></span></div>
+          <div class="q"><span class="n">大阪</span><span class="v"><span class="temp">28 ℃</span><span class="pop">85 %</span></span></div>
+          <div class="q"><span class="n">福岡</span><span class="v"><span class="temp">29 ℃</span><span class="pop">30 %</span></span></div>
+        </div>
+        <p class="rail-note"><b>きょう9日</b>　東北から西日本の広い範囲で雨。非常に激しい雨や雷雨となる所があり、関東・東海・四国では線状降水帯が発生して大雨災害の危険度が急激に高まるおそれ。東京は最高23℃と平年を下回る。<br><b>あす10日</b>　九州〜東北はくもりや雨、東日本は土砂災害に厳重警戒。北海道と沖縄はおおむね晴れ。なお9日頃から17日頃にかけて東北〜九州で10年に一度程度の著しい高温となる可能性が高く、9月半ばでも真夏日・猛暑日の見込み。</p>
+        <p class="src" style="margin-top:8px;">出典：<a href="https://tenki.jp/">日本気象協会 tenki.jp</a>／<a href="https://tenki.jp/forecaster/gureweather/2026/09/03/40435.html">1か月予報解説</a>／<a href="https://www.jma.go.jp/bosai/forecast/">気象庁</a></p>
+      </div>
+    </aside>
+  </div>
+
+  <!-- ══ 段組み紙面 ══ -->
+  <div class="broadsheet">
+
+  <!-- ── 技術面 ── -->
+  <section class="section">
+    <div class="page-label"><span class="mark"></span><h2>技術面</h2><span class="fill"></span><span class="meta">開発環境・OSS</span></div>
+    <div class="grid">
+      <article class="story">
+        <p class="sode">マイクロソフト</p>
+        <h3>開発者向けWindows 11「Project Zenith」</h3>
+        <p>Microsoftが9月4日、開発者向けに調整したWindows 11環境「Project Zenith」を発表した。開発ツールと各種設定をあらかじめ整えた対応PCとして展開し、端末を起動してすぐに開発を始められる状態を狙う。</p>
+        <p>300億パラメータ超のAIモデルをローカルで動かせる構成も想定されており、環境構築の手間と、手元で動かせるモデル規模の両方に手を入れる格好だ。</p>
+        <p class="src">出典：<a href="https://gigazine.net/news/20260907-microsoft-project-zenith/">GIGAZINE（9月7日）</a></p>
+      </article>
+      <article class="story">
+        <p class="sode">フィグマ</p>
+        <h3>Config 2026、コードとデザインを接続</h3>
+        <p>Figmaは開発者会議「Config 2026」で、GitHubと連携する「Code Layers」、アニメーション機能「Figma Motion」など、デザインと実装の距離を縮める機能群を発表した。</p>
+        <p>デザインファイルがリポジトリの状態を参照しうるようになると、レビューの単位が「画面」から「差分」へ寄る。実装側の運用にも影響が及ぶ範囲だ。</p>
+        <p class="src">出典：<a href="https://qiita.com/ishisaka/items/a90767b269f6d6b692b9">プログラミング雑記（9月4日）</a></p>
+      </article>
+      <article class="story">
+        <p class="sode">ツールチェーン</p>
+        <h3>Kotlin 0.12.0、VS 2026、Qwen3.8-Max</h3>
+        <p>足元では Kotlin Toolchain 0.12.0 が公開されたほか、Visual Studio 2026 の新機能と .NET 周りの更新が続いている。AlibabaのQwen3.8-Max-0902も同時期のリリースだ。</p>
+        <p>いずれも単体では小粒だが、「モデルの更新周期に開発ツール側が追随する」構図がはっきりしてきた点は押さえておきたい。</p>
+        <p class="src">出典：<a href="https://qiita.com/ishisaka/items/a90767b269f6d6b692b9">Qiita</a>／<a href="https://news.mynavi.jp/techplus/tag/oss/">TECH+ OSS</a></p>
+      </article>
+    </div>
+  </section>
+
+  <!-- ── 産業面 ── -->
+  <section class="section">
+    <div class="page-label"><span class="mark"></span><h2>産業面</h2><span class="fill"></span><span class="meta">半導体・テック業界</span></div>
+    <div class="grid">
+      <article class="story">
+        <p class="sode">決算</p>
+        <h3>東京エレクトロン、中間期は3割増収の見込み</h3>
+        <p>東京エレクトロンの2027年3月期中間期（2026年4月〜9月）は、売上高1兆5,700億円（前年同期比＋33.1%）、営業利益4,310億円（同＋42.2%）が見込まれる。AI向け投資の加速が製造装置需要を押し上げている。</p>
+        <p class="src">出典：<a href="https://www.nikkei.com/nkd/industry/news/?n_m_code=036">日経会社情報DIGITAL</a></p>
+      </article>
+      <article class="story">
+        <p class="sode">メモリ</p>
+        <h3>サムスン、能力の7割を長期契約で固定</h3>
+        <p>Samsungが全メモリ生産能力の70%を2031年までの長期供給契約で押さえたと伝えられる。AI需要の急増でDRAM市場が逼迫するなか、スポットで買える玉が細る方向に働く。</p>
+        <p>台湾のPowertech Technologyは700億台湾ドルを投じ、AIチップ向けパネルレベルパッケージング工場を2027年稼働で建設する計画だ。</p>
+        <p class="src">出典：<a href="https://amiko.consulting/%E5%8D%8A%E5%B0%8E%E4%BD%93%E3%83%8B%E3%83%A5%E3%83%BC%E3%82%B9-20260902/">Amiko Consulting 半導体ニュース</a></p>
+      </article>
+      <article class="story">
+        <p class="sode">政策</p>
+        <h3>韓国、2027年度予算は過去最高821兆ウォン</h3>
+        <p>韓国政府は2027年度予算案に過去最高となる821兆ウォンを計上した。半導体産業への税制優遇とAI技術への投資を重点に置く構成で、国家単位の補助競争が続く。</p>
+        <p class="src">出典：<a href="https://amiko.consulting/%E5%8D%8A%E5%B0%8E%E4%BD%93%E3%83%8B%E3%83%A5%E3%83%BC%E3%82%B9-20260901/">Amiko Consulting 半導体ニュース</a></p>
+      </article>
+    </div>
+  </section>
+
+  <!-- ── 不動産面 ── -->
+  <section class="section">
+    <div class="page-label"><span class="mark"></span><h2>不動産面</h2><span class="fill"></span><span class="meta">価格・住宅ローン</span></div>
+    <div class="grid two">
+      <article class="story">
+        <p class="sode">マンション市況</p>
+        <h3>首都圏新築、平均1億6,493万円で最高値更新</h3>
+        <p>不動産経済研究所などの集計によると、首都圏の新築マンションは2026年7月の平均価格が1億6,493万円、㎡単価が236.9万円と、いずれも過去最高を更新した。前年同月比では平均価格＋63.7%、㎡単価＋50.8%と極端な伸びだが、東京23区で大規模・高額物件が発売された影響が大きく、市場全体の値動きとは切り離して読む必要がある。</p>
+        <p>中古は7月の首都圏成約価格が5,267万円。新規登録価格は6,834万円、在庫価格は6,866万円で、売り希望と成約の間には依然として1,500万円以上の開きがある。</p>
+        <p>背景には建築資材と人件費の高騰がある。新築コストが上がった結果、事業者は価格を上げるほかなく、供給そのものが絞られている。</p>
+        <p class="src">出典：<a href="https://www.fudousankeizai.co.jp/mansion">不動産経済研究所</a>／<a href="https://www.lvn.co.jp/estate/510/">LIVENESS（9月4日）</a></p>
+      </article>
+      <article class="story">
+        <p class="sode">住宅ローン</p>
+        <h3>9月は固定が上昇、変動は据え置き</h3>
+        <p>2026年9月の住宅ローン金利は、変動型が据え置き、10年固定と35年固定が引き上げとなった。フラット35（買取型）は3.460%で前月から上昇している。日銀は原油高と円安を背景に2026年度後半以降の物価上昇率が2%をはっきり上回ると見ており、政策金利を引き上げていく方針を維持している。</p>
+        <div class="figure-box">
+          <h4>借入3,000万円・35年返済の月々返済額</h4>
+          <table>
+            <tbody>
+              <tr><th>1.163%（現行・大手5行平均）</th><td>約 87,000 円</td></tr>
+              <tr><th>1.663%（＋0.5%）</th><td>約 94,000 円</td></tr>
+              <tr><th>2.163%（＋1.0%）</th><td>約 102,000 円</td></tr>
+            </tbody>
+          </table>
+          <p class="cap">＋1.0%で月1万5千円、35年で約630万円の差。変動を選ぶなら、この幅を許容できるかが判断の軸になる。</p>
+        </div>
+        <p class="src">出典：<a href="https://mogecheck.jp/articles/show/51rzNy7XEJ5o4mQ6ZkVv">モゲチェック</a>／<a href="https://diamond-fudosan.jp/articles/-/132585">ダイヤモンド不動産研究所</a></p>
+      </article>
+    </div>
+  </section>
+
+  <!-- ── 総合面 ── -->
+  <section class="section">
+    <div class="page-label"><span class="mark"></span><h2>総合面</h2><span class="fill"></span><span class="meta">市況・国内</span></div>
+    <div class="grid">
+      <article class="story">
+        <p class="sode">株式</p>
+        <h3>日経平均、小幅続落 65,142円</h3>
+        <p>9日の日経平均株価は小幅に続落し、前日比126円55銭安の6万5,142円78銭で取引を終えた。前日の米国市場で主要指数が下落した流れを受けて売り先行で始まったが、米半導体関連株の一角が堅調だったことが支えとなった。その後は新規材料難で買いが手控えられた。</p>
+        <p class="src">出典：<a href="https://jp.investing.com/news/forex-news/article-1673575">Fisco／Investing.com</a>／<a href="https://www.zaikei.co.jp/article/20260909/869291.html">財経新聞</a></p>
+      </article>
+      <article class="story">
+        <p class="sode">為替・金融政策</p>
+        <h3>円、一時152円台 7か月ぶり水準</h3>
+        <p>円相場は一時1ドル＝152円台まで上昇し、約7か月ぶりの円高水準をつけた。市場の関心は9月の日銀金融政策決定会合に移っており、利上げの有無が焦点となる。もっとも「利上げしても円安は止まらない」との見方も根強く、金利差以外の要因が指摘されている。</p>
+        <p class="src">出典：<a href="https://www.gaitame.com/media/entry/2026/09/07/081048">外為どっとコム マネ育チャンネル（9月7日）</a></p>
+      </article>
+      <article class="story">
+        <p class="sode">国内</p>
+        <h3>公取委、丸亀製麺の運営会社に勧告</h3>
+        <p>公正取引委員会は9日、丸亀製麺などを展開する会社に対し、取適法（下請法改め取引適正化法）違反があったとして勧告を出した。このほか、国民民主党代表選で玉木代表が再選され、内閣改造では片山財務相・茂木外相・小泉防衛相の留任が調整されていると伝えられている。</p>
+        <p class="src">出典：<a href="https://news.web.nhk/newsweb">NHK NEWS WEB</a>／<a href="https://www.jiji.com/jc/archives?g=soc_archive_0">時事ドットコム</a></p>
+      </article>
+    </div>
+  </section>
+
+  <!-- ── 文化面 ── -->
+  <section class="section">
+    <div class="page-label"><span class="mark"></span><h2>文化面</h2><span class="fill"></span><span class="meta">音楽</span></div>
+    <div class="grid">
+      <article class="story">
+        <p class="sode">新譜</p>
+        <h3>細野晴臣、23作目『Yours Sincerely』11日 全世界へ</h3>
+        <p>細野晴臣の23枚目となる新作アルバム『Yours Sincerely』が9月11日（金）に全世界リリースされる。国内はソニー・ミュージックのレーベル「Echoes」から、配信に加えてCD・LP・カセットの全6形態で発売となる。</p>
+        <p>9月にはニューヨークとロサンゼルスでの公演が組まれ、2度目となる単独USツアーの開催も決まった。78歳での全世界同時リリースと海外ツアーという座組みそのものが、ひとつのニュースになっている。</p>
+        <p class="src">出典：<a href="https://www.sonymusic.co.jp/artist/HaruomiHosono/info/584953">ソニーミュージック オフィシャルサイト</a></p>
+      </article>
+      <article class="story">
+        <p class="sode">AIと音楽</p>
+        <h3>「AI生成」表示、業界標準へ動き出す</h3>
+        <p>RIAAとIFPIが主導する業界団体の連合が、AI音楽のラベリング制度を提案した。タグは2種類で、テキストプロンプトから全編をAIが作った場合やリードボーカル・主要トラックを機械が生成した場合の「AI-generated」と、人の手による制作を主としつつ部分的にAIを用いた「AI-assisted」を区別する。Spotifyは9月、クレジット欄でのAI開示に関するDDEX標準への対応を表明した。</p>
+        <p>数字の側は極端だ。Deezerは2026年4月20日時点で1日あたり約75,000曲のAI生成トラックを受け取っており、これは新規アップロードの約44%にあたる。2025年1月の1日1万曲から1年余りで7倍を超えた。</p>
+        <p>一方、AIトラックが集める再生は全体の1〜3%にとどまる。Deezerは完全AI生成曲をアルゴリズム推薦と編集プレイリストから外す運用を採る。供給と需要のあいだに開いた差を、ラベルで可視化しようという段階である。</p>
+        <p class="src">出典：<a href="https://www.musicbusinessworldwide.com/record-industry-proposes-ai-labeling-system-for-streaming-platforms/">Music Business Worldwide</a>／<a href="https://www.hollywoodreporter.com/music/music-industry-news/riaa-pushes-for-ai-labels-on-streaming-services-1236643840/">The Hollywood Reporter</a></p>
+      </article>
+      <article class="story">
+        <p class="sode">ライブ市場</p>
+        <h3>ライブ・エンタメ8,564億円 3年連続で最高</h3>
+        <p>ぴあ総研の調査によると、2025年の国内ライブ・エンタテインメント市場規模は8,564億円（前年比＋12.6%）で、3年連続の過去最高を更新した。動員数は9,223万人（同＋7.7%）、公演回数は100,820回（同＋6.0%）で、公演回数が10万回台に乗るのは2019年以来となる。</p>
+        <p>市場規模は2035年に初めて1兆円台に達する見通しで、25年から16.8%拡大すると予測されている。配信の単価が伸び悩むなかで、収益の重心が「その場に居ること」へ移り続けている構図だ。</p>
+        <p class="src">出典：<a href="https://corporate.pia.jp/news/detail_live_enta_market20260617.html">ぴあ株式会社</a>／<a href="https://www.nikkei.com/article/DGXZQOUC159PM0V10C26A6000000/">日本経済新聞</a></p>
+      </article>
+    </div>
+  </section>
+
+  <!-- ── アニメ面 ── -->
+  <section class="section">
+    <div class="page-label"><span class="mark"></span><h2>アニメ面</h2><span class="fill"></span><span class="meta">新番組・興行・産業</span></div>
+    <div class="grid">
+      <article class="story">
+        <p class="sode">秋クール</p>
+        <h3>10月期は全44作品 『薬屋』第3期など</h3>
+        <p>2026年秋アニメは9月から10月にかけて順次スタートし、地上波・配信あわせて約44作品が並ぶ。主要作の多くは10月上旬の放送開始となる。</p>
+        <p>『薬屋のひとりごと』第3期第1クール、『ガールズ&amp;パンツァー もっとらぶらぶ作戦です！』が10月から。『東京リベンジャーズ』三天戦争編はディズニープラスで10月3日より独占配信となる。新規のテレビアニメ化では『戦車椅子-TANK CHAIR-』が秋、『彼方から』が2026年内に控える。</p>
+        <p class="src">出典：<a href="https://www.oricon.co.jp/anime/2026_autumn/">ORICON NEWS 2026秋アニメ</a>／<a href="https://animeanime.jp/article/2026/08/29/102484.html">アニメ！アニメ！</a></p>
+      </article>
+      <article class="story">
+        <p class="sode">興行</p>
+        <h3>『映画ちいかわ』首位返り咲き 累計138億円</h3>
+        <p>9月4〜6日の国内映画ランキングで、『映画ちいかわ 人魚の島のひみつ』（東宝）が週末3日間で動員92万8千人・興収14億1,500万円をあげ、首位に返り咲いた。累計は動員960万人、興収138億円を突破している。</p>
+        <p>3位には『劇場版 魔法少女まどか☆マギカ ワルプルギスの廻天』が入り、週末3日間で動員21万7千人・興収3億6,400万円。累計は動員90万人、興収15億円を超えた。9位には全編手描きのフル2Dアニメーション『SEKIRO:NO DEFEAT』が初登場した。</p>
+        <p class="src">出典：<a href="https://eiga.com/ranking/jp/">映画.com 国内映画ランキング</a>／<a href="https://anime.eiga.com/news/column/eiga_ranking/">アニメハック</a></p>
+      </article>
+      <article class="story">
+        <p class="sode">産業</p>
+        <h3>市場3兆8,407億円、海外が10年で6.6倍</h3>
+        <p>日本動画協会の集計によると、アニメ産業の市場規模は2024年に3兆8,407億円と過去最高を更新した。内訳は海外2兆1,702億円、国内1兆7千億円規模で、いまや海外が国内を上回る。</p>
+        <p>海外売上は2014年の3,266億円から10年で約6.6倍。Netflix・Crunchyroll・bilibili といったグローバル配信プラットフォームの参入が最大の要因とされる。同協会レポートの編集統括・長谷川雅弘氏は、海外売上の多くが配信へのライセンス収入であり、近年は劇場・商品化・イベント収入も同梱契約として伸びていると説明している。</p>
+        <p class="src">出典：<a href="https://www.gem-standard.com/columns/1410">GEM Standard</a>／<a href="https://kashikapedia.com/anime-data/">可視化pedia</a></p>
+      </article>
+    </div>
+  </section>
+
+  <!-- ── コラム ── -->
+  <div class="column">
+    <div class="yoroku">
+      <h3>余録</h3>
+      <p>けさの紙面は、別々の面に載った記事が一本の線でつながっている。AI投資が半導体装置の受注を押し上げ、メモリの生産能力は2031年までの契約で埋まる。その熱は資材価格と人件費に回り、新築マンションの平均は1億6,493万円まで来た。</p>
+      <p>そして日銀は、物価が2%をはっきり上回るという前提で利上げの構えを崩さない。9月のローン金利表では、変動が据え置かれる一方で固定だけが上がった。据え置かれた側が安全だという意味ではなく、貸し手が先に将来を織り込んだ、というだけの話である。</p>
+      <p>モデルの値段も同じ月に動いた。Sonnet 5の販促価格が終わり、通常価格に戻る。安く試せた期間が終わるのは、AIに限った現象ではないらしい。</p>
+      <p>文化面には別の対照がある。ストリーミングに流れ込むAI生成曲は1日7万5千曲、新規アップロードの4割を超えた。だがそれが集める再生は1〜3%にとどまる。同じ紙面で、ライブの動員は9,223万人と過去最高を更新している。供給が無限に安くなった側と、席の数が動かない側と。増えたものと、増えた分だけ価値が下がらなかったものの差である。</p>
+      <p>アニメ面の数字も同じ話をしている。産業規模3兆8,407億円のうち、海外が2兆1,702億円と国内を上回った。10年で6.6倍である。相場欄の1ドル＝152円という行は、この2兆円を円に換えるときの係数でもある。紙面はどこを切っても、だいたい同じ話をしているらしい。</p>
+      <p class="sign">──けさの五面</p>
+    </div>
+    <div class="sources">
+      <div class="page-label"><span class="mark"></span><h2>本日の出典</h2><span class="fill"></span></div>
+      <ol>
+        <li><a href="https://mihata.jp/column/ai-models-2026-h2-roadmap">AIモデル2026まとめ｜後半に来る新モデル</a></li>
+        <li><a href="https://uravation.com/media/ai-model-overview-hub-2026-june/">AIモデル一覧【2026年9月】｜Uravation</a></li>
+        <li><a href="https://releasebot.io/updates/anthropic">Anthropic Release Notes｜Releasebot</a></li>
+        <li><a href="https://gigazine.net/news/20260907-microsoft-project-zenith/">Microsoft「Project Zenith」｜GIGAZINE</a></li>
+        <li><a href="https://qiita.com/ishisaka/items/a90767b269f6d6b692b9">プログラミング雑記 2026年9月4日｜Qiita</a></li>
+        <li><a href="https://amiko.consulting/%E5%8D%8A%E5%B0%8E%E4%BD%93%E3%83%8B%E3%83%A5%E3%83%BC%E3%82%B9-20260902/">半導体ニュース 20260902｜Amiko Consulting</a></li>
+        <li><a href="https://www.nikkei.com/nkd/industry/news/?n_m_code=036">半導体・電子部品業界ニュース｜日経</a></li>
+        <li><a href="https://www.lvn.co.jp/estate/510/">マンション価格の推移と変動要因｜LIVENESS</a></li>
+        <li><a href="https://www.fudousankeizai.co.jp/mansion">マンション市場動向｜不動産経済研究所</a></li>
+        <li><a href="https://mogecheck.jp/articles/show/51rzNy7XEJ5o4mQ6ZkVv">住宅ローン金利2026年9月｜モゲチェック</a></li>
+        <li><a href="https://jp.investing.com/news/forex-news/article-1673575">日経平均大引け｜Fisco</a></li>
+        <li><a href="https://www.gaitame.com/media/entry/2026/09/07/081048">2026年ドル円見通し｜外為どっとコム</a></li>
+        <li><a href="https://www.sonymusic.co.jp/artist/HaruomiHosono/info/584953">細野晴臣『Yours Sincerely』｜ソニーミュージック</a></li>
+        <li><a href="https://www.musicbusinessworldwide.com/record-industry-proposes-ai-labeling-system-for-streaming-platforms/">AI labeling system for streaming｜MBW</a></li>
+        <li><a href="https://corporate.pia.jp/news/detail_live_enta_market20260617.html">ライブ・エンタメ市場規模 2025年調査｜ぴあ総研</a></li>
+        <li><a href="https://jp.investing.com/news/forex-news/article-1673282">8日の米国市場ダイジェスト｜Fisco</a></li>
+        <li><a href="https://www.nikkei.com/marketdata/quote/JP10YT/">日本国債10年 利回り｜日経マーケットデータ</a></li>
+        <li><a href="https://www.nikkei.com/marketdata/quote/US10YT/">米国債10年 利回り｜日経マーケットデータ</a></li>
+        <li><a href="https://bitbank.cc/knowledge/markets/article/bitbank-daily-2026-09-09">BTC相場分析（9月9日）｜ビットバンク</a></li>
+        <li><a href="https://www.oricon.co.jp/anime/2026_autumn/">2026秋アニメ 新作・続編一覧｜ORICON NEWS</a></li>
+        <li><a href="https://eiga.com/ranking/jp/">国内映画ランキング（9月4〜6日）｜映画.com</a></li>
+        <li><a href="https://www.gem-standard.com/columns/1410">日本アニメ産業市場規模｜GEM Standard</a></li>
+        <li><a href="https://tenki.jp/">全国の天気予報｜日本気象協会 tenki.jp</a></li>
+        <li><a href="https://www.jma.go.jp/bosai/forecast/">天気予報｜気象庁</a></li>
+      </ol>
+      <div class="notice">
+        <b>おことわり</b><br>
+        本紙は2026年9月9日にウェブ検索で収集した記事を編集したものです。各記事の数値は上記の出典（一部は集計サイト・個人ブログを含む二次情報）に依拠しており、一次資料での確認を経ていません。投資・売買の判断材料としてお使いになる場合は、必ず発表元の資料をご確認ください。特にAnthropicの出資額・IPO観測、およびサムスンの生産能力に関する記述は、報道・観測ベースの情報です。相場・指標欄の値は取得時点のもので、日経平均・円相場は9日、NYダウとビットコインは8日終値、国債利回りは9日夕の値です。天気欄は9日の予報で、警報・注意報は発表時刻により変わります。防災上の判断は必ず気象庁の最新発表をご確認ください。
+      </div>
+    </div>
+  </div>
+
+  </div><!-- /broadsheet -->
+
+</div>
