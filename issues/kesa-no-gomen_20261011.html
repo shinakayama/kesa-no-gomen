@@ -1,0 +1,412 @@
+<title>けさの五面</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Shippori+Mincho+B1:wght@400;600;700&family=Noto+Serif+JP:wght@400;600&family=Noto+Sans+JP:wght@400;500;700&display=swap">
+<style>
+  :root{
+    --paper:#EFEEE7;
+    --panel:#F7F6F1;
+    --ink:#000000;
+    --ink-soft:#33362F;
+    --muted:#6C6F65;
+    --rule:#C6C4B7;
+    --hair:#D8D6CA;
+    --ai:#23407F;          /* 藍 */
+    --enji:#8C2B3A;        /* 臙脂 */
+    --tint:#E4E5DC;
+    --shadow:rgba(24,26,24,.14);
+    --serif:"Noto Serif JP","Hiragino Mincho ProN","Yu Mincho",serif;
+    --display:"Shippori Mincho B1","Noto Serif JP","Hiragino Mincho ProN",serif;
+    --sans:"Noto Sans JP","Hiragino Kaku Gothic ProN","Yu Gothic",system-ui,sans-serif;
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --paper:#14161A; --panel:#1A1D22; --ink:#E9E7DE; --ink-soft:#CFCDC3;
+      --muted:#8E9188; --rule:#3A3E45; --hair:#2C3037; --tint:#22262C;
+      --ai:#8FA9E8; --enji:#DE8290; --shadow:rgba(0,0,0,.5);
+    }
+  }
+  :root[data-theme="dark"]{
+    --paper:#14161A; --panel:#1A1D22; --ink:#E9E7DE; --ink-soft:#CFCDC3;
+    --muted:#8E9188; --rule:#3A3E45; --hair:#2C3037; --tint:#22262C;
+    --ai:#8FA9E8; --enji:#DE8290; --shadow:rgba(0,0,0,.5);
+  }
+
+  body{background:var(--paper);color:var(--ink);font-family:var(--serif);
+       -webkit-font-smoothing:antialiased;line-height:1.85;}
+  .sheet{max-width:1160px;margin:0 auto;padding:clamp(18px,3vw,40px) clamp(14px,3vw,36px) 64px;
+         background:var(--panel);box-shadow:0 0 0 1px var(--hair),0 18px 48px -34px var(--shadow);}
+  a{color:var(--ai);text-underline-offset:.18em;text-decoration-thickness:.06em;}
+  a:focus-visible{outline:2px solid var(--enji);outline-offset:3px;}
+
+  /* ── 題字 ───────────────────────── */
+  .masthead{display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:12px 28px;
+            padding-bottom:10px;border-bottom:3px solid var(--ink);}
+  .masthead::after{content:"";display:block;flex:1 0 100%;height:0;}
+  .title-lockup{display:flex;align-items:baseline;gap:14px;flex-wrap:wrap;}
+  .nameplate{font-family:var(--display);font-weight:700;font-size:clamp(2.4rem,6.4vw,3.9rem);
+             line-height:1;letter-spacing:.06em;margin:0;}
+  .nameplate .dot{color:var(--enji);}
+  .colophon{font-family:var(--sans);font-size:.72rem;color:var(--muted);text-align:right;
+            line-height:1.9;letter-spacing:.04em;font-variant-numeric:tabular-nums;}
+  .colophon b{color:var(--ink-soft);font-weight:500;}
+  .hairline{height:1px;background:var(--ink);margin-top:3px;opacity:.55;}
+
+  /* ── 面見出し ──────────────────── */
+  .page-label{display:flex;align-items:center;gap:10px;margin:0 0 14px;}
+  .page-label .mark{width:9px;height:9px;background:var(--enji);flex:none;}
+  .page-label h2{font-family:var(--sans);font-weight:700;font-size:.86rem;letter-spacing:.34em;
+                 margin:0;white-space:nowrap;}
+  .page-label .fill{flex:1;height:1px;background:var(--rule);}
+  .page-label .meta{font-family:var(--sans);font-size:.68rem;color:var(--muted);letter-spacing:.1em;}
+
+  /* ── トップ ───────────────────── */
+  .top{display:grid;grid-template-columns:minmax(0,2.05fr) minmax(0,1fr);gap:0 30px;
+       margin-top:26px;padding-bottom:26px;border-bottom:3px double var(--rule);}
+  .kicker{font-family:var(--sans);font-size:.72rem;font-weight:700;letter-spacing:.2em;
+          color:var(--enji);margin:0 0 8px;}
+  .lead-head{font-family:var(--display);font-weight:700;font-size:clamp(1.85rem,4.4vw,3rem);
+             line-height:1.32;letter-spacing:.01em;margin:0;text-wrap:balance;}
+  .lead-sub{font-family:var(--display);font-size:clamp(1rem,2vw,1.22rem);color:var(--enji);
+            margin:10px 0 0;font-weight:600;line-height:1.6;text-wrap:balance;}
+  .lede{margin:16px 0 0;padding:14px 0;border-top:1px solid var(--ink);border-bottom:1px solid var(--hair);
+        font-size:1.02rem;line-height:1.95;}
+  .two-col{columns:2;column-gap:26px;column-rule:1px solid var(--hair);margin-top:16px;}
+  .two-col p{margin:0 0 .9em;font-size:.94rem;text-align:justify;}
+  .two-col p:last-child{margin-bottom:0;}
+  @media (max-width:760px){.two-col{columns:1;}}
+
+  /* ── 相場欄 ───────────────────── */
+  .rail{border-left:1px solid var(--rule);padding-left:26px;}
+  @media (max-width:900px){
+    .top{grid-template-columns:1fr;gap:26px;}
+    .rail{border-left:0;padding-left:0;border-top:1px solid var(--rule);padding-top:20px;}
+  }
+  .q{display:flex;align-items:baseline;justify-content:space-between;gap:10px;
+     padding:7px 0;border-bottom:1px dotted var(--rule);font-family:var(--sans);
+     font-variant-numeric:tabular-nums;break-inside:avoid;page-break-inside:avoid;}
+  .q:last-child{border-bottom:0;}
+  .q .n{font-size:.79rem;font-weight:500;color:var(--ink-soft);line-height:1.55;}
+  .q .vv{display:flex;align-items:baseline;gap:8px;justify-content:flex-end;flex:none;}
+  .q .v{font-size:.82rem;font-weight:700;white-space:nowrap;text-align:right;}
+  .q .d{font-size:.72rem;font-weight:700;white-space:nowrap;text-align:right;
+        min-width:4.3em;color:var(--muted);font-variant-numeric:tabular-nums;}
+  .q .d.up{color:var(--enji);} .q .d.dn{color:var(--ai);}
+  .unit{font-weight:400;font-size:.72rem;color:var(--muted);margin-left:2px;}
+  .dn{color:var(--ai);} .up{color:var(--enji);}
+  .rail-note{font-family:var(--sans);font-size:.68rem;color:var(--muted);line-height:1.8;
+             margin:12px 0 0;padding-top:10px;border-top:1px solid var(--hair);}
+
+  /* ── 天気欄（東京） ───────────── */
+  .wx{margin-top:24px;}
+  .wx-today{display:flex;align-items:center;gap:16px;padding:10px 0 14px;
+            border-bottom:1px solid var(--rule);}
+  .wx-icon{font-size:2.4rem;line-height:1;flex:none;}
+  .wx-cond{font-family:var(--sans);font-size:.86rem;font-weight:700;color:var(--ink-soft);
+           letter-spacing:.06em;}
+  .wx-temps{font-family:var(--sans);font-variant-numeric:tabular-nums;
+            display:flex;align-items:baseline;gap:8px;}
+  .wx-temps .hi{font-size:1.4rem;font-weight:700;color:var(--enji);}
+  .wx-temps .lo{font-size:1.05rem;font-weight:700;color:var(--ai);}
+  .wx-temps .sep{color:var(--muted);font-weight:400;font-size:.85rem;}
+  .wx-pop{font-family:var(--sans);font-size:.82rem;color:var(--ink-soft);margin-left:auto;
+          text-align:right;line-height:1.6;}
+  .wx-pop b{font-size:1rem;color:var(--ai);}
+
+  /* ── 記事グリッド ─────────────── */
+  .section{margin-top:34px;}
+  .grid{display:grid;gap:0 26px;grid-template-columns:repeat(3,minmax(0,1fr));}
+  .grid.two{grid-template-columns:repeat(2,minmax(0,1fr));}
+  @media (max-width:880px){.grid,.grid.two{grid-template-columns:1fr;gap:0;}}
+  article.story{padding:0 0 20px;border-left:1px solid var(--hair);padding-left:22px;}
+  article.story:first-child{border-left:0;padding-left:0;}
+  @media (max-width:880px){
+    article.story{border-left:0;padding-left:0;padding-top:20px;border-top:1px solid var(--hair);}
+    article.story:first-child{padding-top:0;border-top:0;}
+  }
+  .story h3{font-family:var(--display);font-weight:700;font-size:1.22rem;line-height:1.5;
+            margin:0 0 4px;text-wrap:balance;}
+  .story .sode{font-family:var(--sans);font-size:.68rem;font-weight:700;letter-spacing:.16em;
+               color:var(--muted);margin:0 0 8px;}
+  .story p{margin:0 0 .8em;font-size:.9rem;line-height:1.9;text-align:justify;}
+  .src{font-family:var(--sans);font-size:.68rem;color:var(--muted);line-height:1.7;margin:0;}
+  .src a{color:var(--ai);}
+
+  /* ── 数表（不動産） ───────────── */
+  .figure-box{background:var(--tint);padding:16px 18px;margin:4px 0 12px;}
+  .figure-box h4{font-family:var(--sans);font-size:.72rem;letter-spacing:.16em;margin:0 0 10px;
+                 color:var(--ink-soft);font-weight:700;}
+  .figure-box table{width:100%;border-collapse:collapse;font-family:var(--sans);
+                    font-variant-numeric:tabular-nums;font-size:.8rem;}
+  .figure-box th{text-align:left;font-weight:400;color:var(--ink-soft);padding:5px 0;}
+  .figure-box td{text-align:right;font-weight:700;padding:5px 0;}
+  .figure-box tr+tr th,.figure-box tr+tr td{border-top:1px solid var(--hair);}
+  .figure-box .cap{font-family:var(--sans);font-size:.66rem;color:var(--muted);margin:10px 0 0;line-height:1.7;}
+
+  /* ── コラム ───────────────────── */
+  .column{margin-top:36px;display:grid;grid-template-columns:minmax(0,1.35fr) minmax(0,1fr);gap:0 30px;
+          border-top:3px double var(--rule);padding-top:24px;}
+  @media (max-width:900px){.column{grid-template-columns:1fr;gap:26px;}}
+  .yoroku{border:1px solid var(--rule);padding:22px 24px;background:var(--tint);}
+  .yoroku h3{font-family:var(--display);font-size:1.05rem;margin:0 0 12px;letter-spacing:.3em;
+             font-weight:700;padding-bottom:8px;border-bottom:1px solid var(--rule);}
+  .yoroku p{margin:0 0 .9em;font-size:.92rem;line-height:2;text-align:justify;}
+  .yoroku p:last-of-type{margin-bottom:0;}
+  .yoroku .sign{font-family:var(--sans);font-size:.68rem;color:var(--muted);margin-top:14px;text-align:right;}
+
+  .sources h3{font-family:var(--sans);font-size:.76rem;letter-spacing:.2em;margin:0 0 12px;font-weight:700;}
+  .sources ol{margin:0;padding-left:1.3em;font-family:var(--sans);font-size:.76rem;line-height:1.95;color:var(--muted);}
+  .sources li{margin-bottom:.35em;}
+  .notice{margin-top:22px;padding:14px 16px;border:1px solid var(--hair);
+          font-family:var(--sans);font-size:.72rem;line-height:1.9;color:var(--muted);}
+  .notice b{color:var(--ink-soft);font-weight:700;letter-spacing:.1em;}
+  @media (prefers-reduced-motion:no-preference){
+    .sheet{animation:rise .5s ease-out both;}
+    @keyframes rise{from{opacity:.55;transform:translateY(6px);}to{opacity:1;transform:none;}}
+  }
+
+  /* ── 段組み紙面（相場欄以降） ──── */
+  .broadsheet{columns:3;column-gap:28px;column-rule:1px solid var(--hair);margin-top:30px;}
+  @media (max-width:1000px){.broadsheet{columns:2;}}
+  @media (max-width:700px){.broadsheet{columns:1;}}
+  .broadsheet .grid,.broadsheet .grid.two,.broadsheet .column{display:block;}
+  .broadsheet .column{border-top:0;padding-top:0;margin-top:0;}
+  .broadsheet .section{margin:0 0 6px;}
+  .broadsheet .page-label{break-after:avoid;page-break-after:avoid;margin-bottom:12px;}
+  .broadsheet article.story{border-left:0;border-top:0;padding:0 0 18px;margin:0;
+                            break-inside:avoid;page-break-inside:avoid;}
+  .broadsheet .yoroku,.broadsheet .sources{break-inside:avoid;page-break-inside:avoid;
+                                           margin:0 0 18px;}
+  .broadsheet .figure-box{break-inside:avoid;page-break-inside:avoid;}
+  .broadsheet .figure-box th{font-size:.74rem;line-height:1.5;padding-right:8px;}
+  .broadsheet .figure-box td{font-size:.78rem;white-space:nowrap;}
+  .broadsheet .story p{text-align:left;}
+
+  /* ── 印刷（PDF） ────────────────── */
+  @page{size:A3 portrait;margin:14mm 13mm;}
+  @media print{
+    :root{
+      --paper:#FFFFFF; --panel:#FFFFFF; --ink:#000000; --ink-soft:#33362F;
+      --muted:#5E6157; --rule:#B9B7AA; --hair:#D2D0C4; --tint:#F0EFE7;
+      --ai:#23407F; --enji:#8C2B3A;
+    }
+    *{-webkit-print-color-adjust:exact;print-color-adjust:exact;}
+    body{background:#fff;}
+    .sheet{max-width:none;padding:0;box-shadow:none;animation:none;}
+    article.story,.figure-box,.yoroku,.notice,.rail{break-inside:avoid;}
+    .story h3,.lead-head,.page-label{break-after:avoid;}
+    .section{break-inside:auto;}
+    .column{break-before:auto;}
+    .two-col{columns:3;}
+    .two-col p{text-align:left;}
+    .lede{columns:2;column-gap:32px;}
+
+    /* 相場・指標は紙面幅いっぱいの2段組みに */
+    .top{grid-template-columns:1fr;gap:0;}
+    .rail{border-left:0;padding-left:0;margin-top:22px;padding-top:16px;
+          border-top:1px solid var(--ink);break-inside:avoid;page-break-inside:avoid;}
+    .quotes{columns:2;column-gap:32px;column-rule:1px solid var(--hair);}
+    .rail-note{columns:2;column-gap:32px;}
+    .wx-today{break-inside:avoid;page-break-inside:avoid;}
+  }
+</style>
+
+<div class="sheet">
+
+  <header class="masthead">
+    <div class="title-lockup">
+      <h1 class="nameplate">けさの五面<span class="dot">・</span></h1>
+    </div>
+    <p class="colophon">
+      <b>2026年（令和8年）10月11日 日曜日</b><br>
+      第33号（第4版）／朝刊／6面立て<br>
+      編集 Claude Code ／ 出典はウェブ検索
+    </p>
+  </header>
+  <div class="hairline"></div>
+
+  <!-- ── 一面トップ ── -->
+  <div class="top">
+    <div class="lead">
+      <p class="kicker">一面トップ ／ 金融・不動産</p>
+      <h2 class="lead-head">住宅ローン、10月改定で重荷に　フラット35は最低3.83％で過去最高、変動も一部行で上げ</h2>
+      <p class="lead-sub">フラット35（買取型）、2017年10月の現行制度以降で最高を更新<br>三井住友信託など主要行の一部も変動金利を引き上げ</p>
+      <p class="lede">
+        住宅金融支援機構が10月1日に公表したフラット35（買取型）の最低金利は年3.83％となり、現行制度が始まった2017年10月以降で最高を更新した。変動金利でも主要行の一部が10月分を引き上げており、長期金利の上昇と日本銀行の追加利上げ観測が、住宅ローンを組む世帯の負担に波及し始めている。
+      </p>
+      <div class="two-col">
+        <p>住宅金融支援機構は10月1日、フラット35（買取型、返済期間21年以上35年以下・融資率9割以下）の10月金利を公表した。最低金利は年3.83％で、前月から0.37ポイント上昇。2017年10月の現行制度移行後で最高値となった。固定金利の指標となる新発10年物国債の利回りは、財務省が6日に実施した入札で表面利率を年3.1％に決めるなど上昇傾向が続いており、民間金融機関の資金調達コストを通じて固定型ローンの金利を押し上げているとみられる。</p>
+        <p>変動金利についても、住宅ローン比較サイトの集計（ダイヤモンド不動産研究所調べ、主要14行対象）では10月分で4行が引き上げた。実質金利でみずほ銀行は年1.275％（前月比＋0.250ポイント）、りそな銀行は年1.240％（同＋0.300ポイント）となり、三菱UFJ銀行（年1.195％）、イオン銀行（年1.120％）は据え置かれた。</p>
+        <p>背景には日銀が6月の金融政策決定会合で政策金利を1.0％程度に引き上げたことがある。変動金利の基準となる短期プライムレートを10月にも見直す銀行が多いとの予想が出ていたが、既存の借り手への返済額反映は多くの銀行で2027年1月以降となる見通し。返済額が5年ごとに見直される「5年ルール」の適用者は、当面の返済額が変わらない。</p>
+      </div>
+      <p class="src">出典：<a href="https://kumanichi.com/articles/2041676">共同通信（熊日）</a>／<a href="https://diamond-fudosan.jp/articles/-/1113331">ダイヤモンド不動産研究所</a>／<a href="https://www.mizuhobank.co.jp/corporate/mhri/research/report/pdf/express-jp260702.pdf">みずほリサーチ&テクノロジーズ</a></p>
+    </div>
+
+    <aside class="rail">
+      <div class="page-label"><span class="mark"></span><h2>相場・指標</h2><span class="fill"></span></div>
+      <div class="quotes">
+        <div class="q"><span class="n">日経平均株価<br><span class="unit">（9日終値）</span></span><span class="vv"><span class="v">69,030.92 <span class="unit">円</span></span><span class="d dn">−11.19</span></span></div>
+        <div class="q"><span class="n">NYダウ<br><span class="unit">（9日終値）</span></span><span class="vv"><span class="v">51,654.95 <span class="unit">ドル</span></span><span class="d up">＋423.31</span></span></div>
+        <div class="q"><span class="n">円相場<br><span class="unit">（10日5時・日本時間）</span></span><span class="vv"><span class="v">158.25 <span class="unit">円</span></span><span class="d up">＋0.19</span></span></div>
+        <div class="q"><span class="n">米国債10年<br><span class="unit">（10日3時・日本時間）</span></span><span class="vv"><span class="v">5.244 <span class="unit">%</span></span><span class="d up">＋0.013</span></span></div>
+        <div class="q"><span class="n">ビットコイン<br><span class="unit">（11日5時・日本時間）</span></span><span class="vv"><span class="v">83,013 <span class="unit">ドル</span></span><span class="d up">＋0.6%</span></span></div>
+        <div class="q"><span class="n">日本国債10年<br><span class="unit">（6日・入札時の表面利率）</span></span><span class="vv"><span class="v">3.10 <span class="unit">%</span></span><span class="d">—</span></span></div>
+        <div class="q"><span class="n">フラット35（買取型）<br><span class="unit">（10月・最低金利）</span></span><span class="vv"><span class="v">3.83 <span class="unit">%</span></span><span class="d up">＋0.37</span></span></div>
+        <div class="q"><span class="n">変動金利（主要行平均）<br><span class="unit">（10月・3行実質金利の平均）</span></span><span class="vv"><span class="v">1.24 <span class="unit">%</span></span><span class="d">—</span></span></div>
+        <div class="q"><span class="n">Claude Opus API<br><span class="unit">（入力・百万トークン、7月時点）</span></span><span class="vv"><span class="v">5.00 <span class="unit">ドル</span></span><span class="d">—</span></span></div>
+        <div class="q"><span class="n">GPT-5.4 API<br><span class="unit">（入力・百万トークン、同時点）</span></span><span class="vv"><span class="v">2.50 <span class="unit">ドル</span></span><span class="d">—</span></span></div>
+      </div>
+      <p class="rail-note">日経平均・NYダウ・ドル円・米国債10年・ビットコインはscripts/fetch_markets.pyによるYahoo Finance取得値（基準日時は項目ごとに記載）。日本国債10年は6日の10年債入札時の表面利率。フラット35は住宅金融支援機構の10月発表分。変動金利は三菱UFJ・りそな・みずほ3行の実質金利の単純平均（ダイヤモンド不動産研究所調べ、三井住友・三井住友信託銀行の10月分は未確認）。AI API価格は複数アグリゲーターの集計（2026年7月時点）で出典により数値差が大きい。『—』は前日比・前月比を確認できなかったもの。</p>
+
+      <div class="wx">
+        <div class="page-label"><span class="mark"></span><h2>天気</h2><span class="fill"></span><span class="meta">東京・11日</span></div>
+        <div class="wx-today">
+          <span class="wx-icon" aria-hidden="true">☀️</span>
+          <span class="wx-cond">晴れ</span>
+          <span class="wx-temps"><span class="hi">27℃</span><span class="sep">／</span><span class="lo">17℃</span></span>
+          <span class="wx-pop">降水確率<br><b>0%</b></span>
+        </div>
+        <p class="rail-note"><b>きょう11日</b>　東京は3連休2日目。高気圧に覆われて朝から晴れ渡り、日中は27℃前後まで上がる一方、朝晩は17℃まで下がり寒暖差が大きい。傘の心配はなさそう。<br><b>全国・明日12日（スポーツの日）</b>　本州付近は高気圧に覆われ、広い範囲で秋晴れが続く見込み。北日本や南西諸島の一部では雨の降る所もある。警報級の現象は確認されていないが、防災上の判断は気象庁の最新発表を確認するように。</p>
+        <p class="src" style="margin-top:8px;">出典：<a href="https://weathernews.jp/news/202610/100101/">ウェザーニュース</a>／<a href="https://tenki.jp/forecast/3/16/4410/13101/">日本気象協会 tenki.jp</a></p>
+      </div>
+    </aside>
+  </div>
+
+  <!-- ══ 段組み紙面 ══ -->
+  <div class="broadsheet">
+
+  <!-- ── 技術面 ── -->
+  <section class="section">
+    <div class="page-label"><span class="mark"></span><h2>技術面</h2><span class="fill"></span><span class="meta">セキュリティ・開発動向</span></div>
+    <div class="grid">
+      <article class="story">
+        <p class="sode">個人情報漏洩</p>
+        <h3>大和証券など複数社に流出拡大　委託先サーバーの不正アクセス、シチズン時計にも</h3>
+        <p>大和証券は10月5日、問い合わせ管理などに使う外部委託先スカラコミュニケーションズのサーバーが10月2日夜から3日朝にかけて不正アクセスを受け、氏名や口座番号を含む顧客情報が最大約11万人分漏えいした可能性があると発表した。大和証券自身のシステムへの侵入は確認されていないという。</p>
+        <p>同じ委託先の問い合わせシステム「i-ask」を使っていたシチズン時計も10月6日、ブランドサイトの問い合わせフォーム情報など約10万人分が漏えいした可能性があると公表した。複数の企業が同一の基盤を共有していたことで、被害が業種を越えて広がった形だ。</p>
+        <p>両社とも不正取引や情報の流出・拡散は確認されていないとしているが、大和証券などを装ったフィッシングメールや電話への注意を呼びかけている。</p>
+        <p class="src">出典：<a href="https://ascii.jp/elem/000/004/439/4439964/">ASCII.jp</a>／<a href="https://scan.netsecurity.ne.jp/article/2026/10/08/56412.html">ScanNetSecurity</a></p>
+      </article>
+      <article class="story">
+        <p class="sode">開発者イベント</p>
+        <h3>GitHub Universe、10月28・29日にサンフランシスコで開催　AMDやNVIDIAも登壇へ</h3>
+        <p>GitHubは年次イベント「GitHub Universe 2026」を10月28・29日、サンフランシスコのフォートメイソン・センターで開く。公開されたスケジュールでは、AMD、Figma、NVIDIA、Coinbaseなどがセッションに登壇し、AnthropicやOpenAIも参加する見通し。</p>
+        <p>テーマは「エージェント時代」。AIコーディングエージェントを実際の開発現場でどう運用するかが主要な論点になるとみられ、Copilotへの作業委任やMCP（Model Context Protocol）のセキュリティなどがセッション案に挙がっている。</p>
+        <p class="src">出典：<a href="https://github.blog/news-insights/company-news/your-guide-to-github-universe-2026-is-here-the-schedule-just-launched/">GitHub Blog</a></p>
+      </article>
+    </div>
+  </section>
+
+  <!-- ── 産業面 ── -->
+  <section class="section">
+    <div class="page-label"><span class="mark"></span><h2>産業面</h2><span class="fill"></span><span class="meta">半導体・決算</span></div>
+    <div class="grid">
+      <article class="story">
+        <p class="sode">四半期決算</p>
+        <h3>TSMC、7〜9月期の売上高が過去最高に　AI向け需要が押し上げ</h3>
+        <p>台湾のTSMCは10月8日、9月単月の連結売上高が5118億5700万台湾ドルになったと発表した。前年同月比54.6％増だったが、8月比では0.6％減。7〜9月期の月次売上高を合計すると1兆4942億4300万台湾ドルとなり、四半期として過去最高を更新した。</p>
+        <p>1〜9月の累計売上高は3兆8987億2700万台湾ドルで、前年同期比41.1％増。AIや高性能計算（HPC）向けの先端チップ需要拡大が主因とされる。同社は7月時点で7〜9月期の売上高見通しを446億〜458億ドル（米ドル）としており、実績はその上限に近い水準になったとみられる。</p>
+        <p class="src">出典：<a href="https://finance.technews.tw/2026/10/08/tsmc-2330-202609-financial-report/">TechNews</a>／<a href="https://pr.tsmc.com/english/news/3343">TSMC</a></p>
+      </article>
+    </div>
+  </section>
+
+  <!-- ── 不動産面 ── -->
+  <section class="section">
+    <div class="page-label"><span class="mark"></span><h2>不動産面</h2><span class="fill"></span><span class="meta">住宅ローン金利</span></div>
+    <div class="grid two">
+      <article class="story">
+        <p class="sode">変動金利</p>
+        <h3>変動金利、10月は4行が上げ　みずほ＋0.250、りそな＋0.300ポイント</h3>
+        <p>住宅ローン比較サイトの集計（ダイヤモンド不動産研究所調べ、主要14行対象）によると、10月分の変動金利（新規・借り換え）は4行が引き上げ、10行が据え置いた。実質金利の上位は年1.120％のイオン銀行、年1.195％の三菱UFJ銀行で、りそな銀行は年1.240％（前月比＋0.300ポイント）、みずほ銀行は年1.275％（同＋0.250ポイント）だった。</p>
+        <p>日銀が6月に政策金利を1.0％程度へ引き上げたことを受け、変動金利の基準となる短期プライムレートを10月に見直す銀行が多いとみられていた。ただ既存の借り手への返済額反映は2027年1月以降が一般的で、「5年ルール」の適用者は当面の返済額が変わらない見通し。</p>
+        <p class="src">出典：<a href="https://diamond-fudosan.jp/articles/-/1113331">ダイヤモンド不動産研究所</a></p>
+      </article>
+      <article class="story">
+        <p class="sode">フラット35</p>
+        <h3>フラット35、最低金利3.83％で過去最高　長期金利上昇が影響</h3>
+        <p>住宅金融支援機構が10月1日に発表したフラット35（買取型、返済期間21年以上35年以下・融資率9割以下）の金利は、最低金利が年3.83％となった。前月より0.37ポイント上昇し、現行制度に移行した2017年10月以降で最高値を更新した。</p>
+        <p>固定金利の指標となる新発10年物国債の利回りは、財務省が10月6日に実施した入札で表面利率を年3.1％と決めるなど上昇傾向が続いている。長期金利の上昇が、フラット35をはじめとする固定型住宅ローンの金利に直接反映される構図だ。</p>
+        <p class="src">出典：<a href="https://kumanichi.com/articles/2041676">共同通信（熊日）</a>／<a href="https://kumanichi.com/articles/2043510">共同通信（熊日）</a></p>
+      </article>
+    </div>
+  </section>
+
+  <!-- ── 総合面 ── -->
+  <section class="section">
+    <div class="page-label"><span class="mark"></span><h2>総合面</h2><span class="fill"></span><span class="meta">週末の市場</span></div>
+    <div class="grid">
+      <article class="story">
+        <p class="sode">株式・金利</p>
+        <h3>日経平均、9日は11円安で3日続落　長期金利の上昇が重荷に</h3>
+        <p>9日の東京株式市場で日経平均株価は前日比11円19銭安の6万9030円92銭で取引を終え、3営業日続落となったが下落幅は小幅だった。前日に大幅安となった反動で持ち直す場面もあったが、長期金利の上昇や日銀の追加利上げ観測が相場の重荷になったとみられる。10日の取引がない週末も、長期金利は10年債入札で年3.1％の表面利率となるなど、上昇傾向が続いている。</p>
+        <p>同日のニューヨーク株式市場ではNYダウが続伸し、423.31ドル高の5万1654.95ドルで終えた。ドル円相場は1ドル=158円台で推移し、ビットコインも底堅く、週末にかけて8万3000ドル台を回復した。</p>
+        <p class="src">出典：<a href="https://finance.yahoo.com/quote/%5EN225/">Yahoo Finance</a>／<a href="https://finance.yahoo.com/quote/%5EDJI/">Yahoo Finance</a></p>
+      </article>
+    </div>
+  </section>
+
+  <!-- ── 文化面〔音楽・アニメ〕 ── -->
+  <section class="section">
+    <div class="page-label"><span class="mark"></span><h2>文化面〔音楽・アニメ〕</h2><span class="fill"></span><span class="meta">3連休の公演・新作映画</span></div>
+    <div class="grid two">
+      <article class="story">
+        <p class="sode">音楽</p>
+        <h3>3連休2日目、各地でライブ　JUJUは完売、BOYNEXTDOORはLaLa arenaで</h3>
+        <p>11日は3連休2日目で、各地でコンサートが開かれている。JUJUは東京国際フォーラム ホールAで公演するが、チケットは予定枚数終了。韓国のBOYNEXTDOORは千葉県のLaLa arena TOKYO-BAYで、平原綾香はBunkamuraオーチャードホールで、それぞれ公演する。</p>
+        <p>いきものがかりは松山市民会館大ホールで、倍賞千恵子は愛知県の中日ホールでコンサートを開く。すみだトリフォニーホールでは新日本フィルハーモニー交響楽団の名曲コンサートも予定されている。</p>
+        <p class="src">出典：<a href="https://eplus.jp/sf/live/kanto/p60">イープラス</a></p>
+      </article>
+      <article class="story">
+        <p class="sode">アニメ映画</p>
+        <h3>「ガールズ&パンツァー 最終章」第5話、9日公開　シリーズ初のドルビーシネマ上映も</h3>
+        <p>劇場版シリーズ「ガールズ&パンツァー 最終章」の第5話が10月9日に公開された。前作の第4話から3年ぶりの新作で、通常上映に加えてシリーズとして初めてドルビーシネマ上映も行われている。</p>
+        <p>2017年公開の第1話は公開初週末に動員12万人、興収1億4600万円を記録しており、今回も人気シリーズの劇場版として注目されている。</p>
+        <p class="src">出典：<a href="https://news.denfaminicogamer.jp/news/2604243c">電ファミニコゲーマー</a></p>
+      </article>
+    </div>
+  </section>
+
+  <!-- ── コラム ── -->
+  <div class="column">
+    <div class="yoroku">
+      <h3>余録</h3>
+      <p>きょうの紙面を貫く一本の線は、長期金利の上昇だ。一面と不動産面で見た住宅ローンの10月改定は、フラット35の最低金利が過去最高の3.83％に達し、変動金利も一部の銀行で引き上げられた。いずれも、日銀の追加利上げ観測と長期金利の上昇という同じ流れの上にある。</p>
+      <p>総合面で見た週末の株式市場も無縁ではない。日経平均は9日まで3営業日続落し、金利上昇が株価の重荷になっているとの見方が出ている。技術面で報じた大和証券やシチズン時計の情報流出は、直接は金利と関係しないものの、委託先という『見えにくいリスク』への警戒が必要な点で、住宅ローンの金利上昇とはまた別の意味で家計や企業に静かに迫っている。</p>
+      <p>住宅ローンを組む家計にとっても、株式に投資する個人にとっても、金利という一本の糸が、紙面のあちこちに顔を出す一日だった。</p>
+      <p class="sign">──けさの五面</p>
+    </div>
+    <div class="sources">
+      <div class="page-label"><span class="mark"></span><h2>本日の出典</h2><span class="fill"></span></div>
+      <ol>
+        <li><a href="https://kumanichi.com/articles/2041676">フラット35の金利3・83％ 過去最高更新、10月分</a></li>
+        <li><a href="https://diamond-fudosan.jp/articles/-/1113331">2026年10月の住宅ローン変動金利ランキング</a></li>
+        <li><a href="https://www.mizuhobank.co.jp/corporate/mhri/research/report/pdf/express-jp260702.pdf">住宅ローン変動金利、10月に上昇予想</a></li>
+        <li><a href="https://ascii.jp/elem/000/004/439/4439964/">大和証券、顧客情報流出の可能性</a></li>
+        <li><a href="https://scan.netsecurity.ne.jp/article/2026/10/08/56412.html">シチズン時計、委託先サーバに不正アクセス</a></li>
+        <li><a href="https://github.blog/news-insights/company-news/your-guide-to-github-universe-2026-is-here-the-schedule-just-launched/">Your guide to GitHub Universe 2026</a></li>
+        <li><a href="https://finance.technews.tw/2026/10/08/tsmc-2330-202609-financial-report/">台積電9月營收、年増54.7%</a></li>
+        <li><a href="https://pr.tsmc.com/english/news/3343">TSMC September 2026 Revenue Report</a></li>
+        <li><a href="https://kumanichi.com/articles/2043510">10年物国債、利率3・1％ 金利上昇、30年ぶり高水準</a></li>
+        <li><a href="https://finance.yahoo.com/quote/%5EN225/">日経平均株価</a></li>
+        <li><a href="https://finance.yahoo.com/quote/%5EDJI/">NYダウ</a></li>
+        <li><a href="https://eplus.jp/sf/live/kanto/p60">ライブ・コンサート情報</a></li>
+        <li><a href="https://news.denfaminicogamer.jp/news/2604243c">ガールズ&パンツァー最終章第5話、10月9日公開</a></li>
+        <li><a href="https://finance.yahoo.com/quote/JPY=X/">ドル円相場</a></li>
+        <li><a href="https://finance.yahoo.com/quote/%5ETNX/">米国債10年</a></li>
+        <li><a href="https://finance.yahoo.com/quote/BTC-USD/">ビットコイン</a></li>
+        <li><a href="https://benchlm.ai/anthropic/api-pricing">Anthropic API Pricing</a></li>
+        <li><a href="https://fungies.io/?p=39641">LLM API Pricing Comparison 2026</a></li>
+        <li><a href="https://weathernews.jp/news/202610/100101/">明日10月11日（日）の天気予報 三連休二日目も広範囲で秋晴れ 北と南は雨の所も</a></li>
+        <li><a href="https://tenki.jp/forecast/3/16/4410/13101/">東京都（東京地方）の天気</a></li>
+      </ol>
+      <div class="notice">
+        <b>おことわり</b><br>
+        この号はウェブ検索による情報をもとに編集しており、二次情報（まとめサイトやアグリゲーターの集計）を含みます。相場（日経平均・NYダウ・ドル円・米国債10年・ビットコイン）はscripts/fetch_markets.pyによるYahoo Finance取得値で、基準日時は各項目に記載の通り（日経平均・NYダウは9日終値、ドル円は10日5時、米国債10年は10日3時、ビットコインは11日5時、いずれも日本時間）。日本国債10年は6日の10年債入札時の表面利率、フラット35（買取型）は住宅金融支援機構が10月1日発表した10月分、変動金利は三菱UFJ・りそな・みずほ3行の実質金利の単純平均（ダイヤモンド不動産研究所調べ、三井住友・三井住友信託銀行の10月分は確認できず）。AI API価格は複数のアグリゲーターサイトの集計（2026年7月時点）によるもので、出典により数値が大きく異なる。『—』は前日比・前月比を確認できなかったもの。天気は東京のみを対象に、ウェザーニュースおよび日本気象協会tenki.jpの予報（10日発表分）をもとにしている。防災上の判断は気象庁の最新発表を確認するように。
+      </div>
+    </div>
+  </div>
+
+  </div><!-- /broadsheet -->
+
+</div>
